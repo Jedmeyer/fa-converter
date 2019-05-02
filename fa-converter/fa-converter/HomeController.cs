@@ -20,7 +20,11 @@ namespace fa_converter
         {
             return View();
         }
+        public ActionResult Build(string input, string type)
+        {
 
+            return Content(input + type);
+        }
 
         [HttpPost]
         [ActionName("Index")]
