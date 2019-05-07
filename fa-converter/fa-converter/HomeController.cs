@@ -14,7 +14,7 @@ namespace faconverter
     {
         public string name;
         public bool visited = false;  
-        public List<state> next;
+        public List <List<string>> next;
         public bool accept = false;
         public state(string n) { name = n; }
         public state() { }
@@ -85,13 +85,13 @@ namespace faconverter
 
             for (int i = 0; i < numStates; i++)
             {
-                inFunc[i].next = new List<state>(numAlpha);
+                inFunc[i].next = new List<List<string>>(numAlpha);
             }
 
 
             //input
-            int curstate;
-            int curinput;
+            int curstate = -1;
+            int curinput = -1;
             for (int i=0; i<input.Length; i++)
             {
                 for (int j = 0; j < numStates; j++)
@@ -114,6 +114,16 @@ namespace faconverter
                 }
                 i += 2;
 
+                int k = i;
+                while(input[k] != ';')
+                {
+                    if (input[k] != ',')
+                    {
+                        inFunc[curstate].next[curinput].Add(input[k].ToString());
+                    }
+                    k++;
+                }
+                i = k + 1;
             }
 
             PriorityQueue<state> pq;
