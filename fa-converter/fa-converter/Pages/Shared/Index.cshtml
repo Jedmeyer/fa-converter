@@ -8,6 +8,19 @@
 
 <!DOCTYPE html>
 <html>
+<head>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <b>Enter the Transition Functions for a Finite Automata below:</b>
+</head>
 
 <body>
 
@@ -15,9 +28,14 @@
             var div = document.getElementById('TransFunc');
             clone = div.cloneNode(true);
             document.getElementById("Funcs").appendChild(clone);
-        }</script>
+        }
+    </script>
+        
+    <p id="test">
+        Example: 𝛿(current_state, input_symbol) = {next_state}<br>
+        If there are multiple next states, separate them by a common (ex: B,D,E)
+    </p>
 
-    <p id="demo">Click the button to clone the above items</p>
     <button onclick="myFunction()">+</button> <br>
 
     <form action="/action_page.php">

@@ -23,9 +23,17 @@ body {
     width: 100%;
 }
 
+head {
+    text-align:center
+}
+
 /* QR code generator */
 #qrCode {
     margin: 15px;
+}
+
+#test {
+    padding-left: 30px;
 }
 
 /* Hide/rearrange for smaller screens */
