@@ -21,6 +21,8 @@ namespace fa_converter
             return View();
         }
         // Response to the transition function.
+        [HttpGet]
+        [Route("/Build")]
         public ActionResult Build(string input, string type)
         {
                 
