@@ -138,15 +138,39 @@ namespace faconverter
             }
 
             PriorityQueue<state> pq;
-            
-            //Store transition function info
-
-
-            List<state> transflist;
-
-
+            List<state> transflist = new List<state>(0);
 
             //Add start state to pq
+            pq.Enqueue(inFunc[0]);
+
+
+            while (pq != null)
+            {
+                state cur = pq.Dequeue();
+
+                //if cur not in transflist 
+                {
+                    for (int i = 0; i < cur.name.Length; i++)
+                    {
+                        cur.visited = true;
+                        for (int j = 0; j < numAlpha; j++)
+                        {
+                            string temp = string.Join((char)cur.next[j]);
+                            cur.next = temp;
+                        }
+                    }
+
+                    transflist.Add(cur);
+
+                    for (int j = 0; j < numAlpha; j++)
+                    {
+                        //add next elements if not visited and not in pq
+                        //not visited = not in transflist
+                    }
+                }
+            }
+
+
 
             //While(pq not empty):
                 //cur = element popped off pq
