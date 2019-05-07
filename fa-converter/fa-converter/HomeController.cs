@@ -161,7 +161,8 @@ namespace faconverter
                         cur.visited = true;
                         for (int j = 0; j < numAlpha; j++)
                         {
-                            string temp = string.Join((char)cur.next[j]);
+                            string temp = "";
+                            temp = temp + cur.next[j];
                             cur.next = temp;
                         }
                     }
