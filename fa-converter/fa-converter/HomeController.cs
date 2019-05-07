@@ -10,8 +10,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace faconverter
 {
-    public class state
+    public class state : IComparable
     {
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            state otherState = obj as state;
+
+            if (otherState != null)
+                return this.name.CompareTo(otherState.name);
+            else
+                throw new ArgumentException("Jason has no idea what he's doing.");
+        }
         public string name;
         public bool visited = false;  
         public List <List<string>> next;
