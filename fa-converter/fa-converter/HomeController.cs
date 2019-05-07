@@ -32,8 +32,13 @@ namespace faconverter
             return View();
         }
         // Response to the transition function.
+
+        [HttpGet]
+        [Route("/Build")]
         public ActionResult Build(string states, string acc, string alpha, string input, string type)
         {
+            string newline = @"
+";
             int numStates = 0;
             for (int i = 0; i<states.Length; i++)
             {
@@ -140,11 +145,7 @@ namespace faconverter
 
             //return transflist
 
-               return Content(input + type);
-
-
-
-
+            return Content(states + newline + acc + newline + alpha + newline + input + newline + type);
         }
 
         [HttpPost]
