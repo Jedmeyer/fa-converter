@@ -1,12 +1,4 @@
-﻿@page
-@model IndexModel
-@{
-}
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <environment include="Development">
@@ -24,7 +16,8 @@
 
 <body>
 
-    <script>function myFunction() {
+    <script>
+    function myFunction() {
             var div = document.getElementById('TransFunc');
             clone = div.cloneNode(true);
             document.getElementById("Funcs").appendChild(clone);
@@ -36,22 +29,37 @@
         If there are multiple next states, separate them by a common (ex: B,D,E)
     </p>
 
+    <script>
+        function parse() {
+            var children = document.getElementById('Funcs').childNodes;
+            var array = Array.from(children);
+
+
+            var inputs = document.getElementsByTagName("input");
+            var inputs = Array.from(inputs);
+            inputs.forEach(function (element) {
+                console.log(element.value);
+            })
+        }
+    </script>
+
     <button onclick="myFunction()">+</button> <br>
 
-    <form action="/action_page.php">
+    <form>
 
         <div id="Funcs">
 
             <div id="TransFunc" display="block">
-                𝛿(<input type="text" name="curstate" value="" maxlength="1" size="1">,<input type="text" name="input" value="" maxlength="1" size="1"> ) = {<input type="text" name="nextstate" value="" maxlength="20">}<br>
+                𝛿( <input type="text" name="curstate" value="" maxlength="1" size="1">,<input type="text" name="input" value="" maxlength="1" size="1"> ) = {<input type="text" name="nextstate" value="" maxlength="20">}<br>
             </div>
+
         </div>
         <br>
-        <input type="submit" value="Submit">
+        <input onclick="parse()" type="submit" value="Submit">
     </form>
 
 
-    <p>Click the "Submit" button and the form-data will be sent to a page on the server called "/action_page.php".</p>
+    <p>Click the "Submit" button</p>
 
 </body>
 </html>
