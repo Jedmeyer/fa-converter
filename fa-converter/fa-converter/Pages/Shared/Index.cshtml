@@ -33,19 +33,33 @@
         function parse() {
             var children = document.getElementById('Funcs').childNodes;
             var array = Array.from(children);
-
+            var curUrl = location.href;
 
             var inputs = document.getElementsByTagName("input");
             var inputs = Array.from(inputs);
+            var bigstr = '';
             inputs.forEach(function (element) {
-                console.log(element.value);
+                if (element.value == null || element.value == 'Submit') {
+                    return;
+                }
+
+                else {
+                    var str = element.value;
+                    str.trim();
+                    bigstr = bigstr + str + ';' ;
+                }
+     
             })
+            console.log(bigstr);
+            var newUrl = curUrl + "Build" + "?input=" + bigstr + "&type=NFA"
+            window.location = newUrl
+
         }
     </script>
 
-    <button onclick="myFunction()">+</button> <br>
+    <button onclick="myFunction()" type="submit" value="+">+</button> <br>
 
-    <form>
+    <div>
 
         <div id="Funcs">
 
@@ -56,7 +70,7 @@
         </div>
         <br>
         <input onclick="parse()" type="submit" value="Submit">
-    </form>
+    </div>
 
 
     <p>Click the "Submit" button</p>

@@ -24,7 +24,7 @@ namespace fa_converter
         public ActionResult Build(string input, string type)
         {
                 
-                return Content(input + type);
+             return Content(input + type);
 
 
 
