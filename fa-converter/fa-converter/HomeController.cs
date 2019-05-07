@@ -23,10 +23,12 @@ namespace fa_converter
         // Response to the transition function.
         [HttpGet]
         [Route("/Build")]
-        public ActionResult Build(string input, string type)
+        public ActionResult Build(string state, string acc, string alpha, string input, string type)
         {
-                
-             return Content(input + type);
+
+            string newline = @"
+";
+             return Content(state + newline + acc + newline + alpha + newline + input + newline + type);
 
 
 
