@@ -24,9 +24,10 @@ namespace faconverter
                 throw new ArgumentException("Jason has no idea what he's doing.");
         }
         public string name;
-        public bool visited = false;  
-        public List <List<string>> next;
+        public int id;
+        public List<state**> next;
         public bool accept = false;
+
         public state(string n) { name = n; }
         public state() { }
     }
@@ -57,12 +58,12 @@ namespace faconverter
             }
 
             //states
-            List<state> inFunc = new List<state>(numStates);
+            List<state> initFunc = new List<state>(numStates);
             for (int i = 0; i<states.Length; i++)
             {
                 if (input[i] != ',')
                 {
-                    inFunc[i].name = states[i].ToString();
+                    initFunc[i].name = states[i].ToString();
                 }
             }
 
@@ -73,9 +74,9 @@ namespace faconverter
                 {
                     for (int j=0; j < numStates; j++)
                     {
-                        if (inFunc[j].name == acc[i].ToString())
+                        if (initFunc[j].name == acc[i].ToString())
                         {
-                            inFunc[j].accept = true;
+                            initFunc[j].accept = true;
                             break;
                         }
                     }
@@ -96,7 +97,7 @@ namespace faconverter
 
             for (int i = 0; i < numStates; i++)
             {
-                inFunc[i].next = new List<List<string>>(numAlpha);
+                initFunc[i].next = new List<List<string>>(numAlpha);
             }
 
 
@@ -107,7 +108,7 @@ namespace faconverter
             {
                 for (int j = 0; j < numStates; j++)
                 {
-                    if (inFunc[j].name == input[i].ToString())
+                    if (initFunc[j].name == input[i].ToString())
                     {
                         curstate = j;
                         break;
@@ -130,7 +131,7 @@ namespace faconverter
                 {
                     if (input[k] != ',')
                     {
-                        inFunc[curstate].next[curinput].Add(input[k].ToString());
+                        initFunc[curstate].next[curinput].Add(input[k].ToString());
                     }
                     k++;
                 }
@@ -138,34 +139,56 @@ namespace faconverter
             }
 
             PriorityQueue<state> pq;
-            List<state> transflist = new List<state>(0);
+            List<state> transFunc = new List<state>(0);
 
             //Add start state to pq
-            pq.Enqueue(inFunc[0]);
+            pq.Enqueue(initFunc[0]);
 
 
             while (pq != null)
             {
                 state cur = pq.Dequeue();
 
-                //if cur not in transflist 
+                bool visit = false;
+
+                for (int i = 0; i < transFunc.Count; i++)
+                {
+                    if (transFunc[i].name == cur.name)
+                    {
+                        visit = true;
+                        break;
+                    }
+                }
+
+                if (visit == false)
                 {
                     for (int i = 0; i < cur.name.Length; i++)
                     {
                         cur.visited = true;
                         for (int j = 0; j < numAlpha; j++)
                         {
+                            cur.next[j][0] += 
                             string temp = string.Join((char)cur.next[j]);
-                            cur.next = temp;
+                            cur.next[j][0] = temp;
                         }
                     }
 
-                    transflist.Add(cur);
+                    transFunc.Add(cur);
 
                     for (int j = 0; j < numAlpha; j++)
                     {
+                        for (int k = 0; k < transFunc.Count; k++)
+                        {
+                            bool v = false;
+                            if (transFunc[k].name == cur.next[j][0])
+                            {
+                                v = true;
+                                break;
+                            }
+                        }
+
                         //add next elements if not visited and not in pq
-                        //not visited = not in transflist
+                        //not visited = not in transFunc
                     }
                 }
             }
@@ -180,15 +203,15 @@ namespace faconverter
                 //  cur.zero += cur.name[i].zero
                 //  cur.one = cur.name[i].one
 
-                //Add cur, 0, cur.zero to transflist
-                //Add cur, 1, cur.one to transflist
+                //Add cur, 0, cur.zero to transFunc
+                //Add cur, 1, cur.one to transFunc
 
                 //if cur.zero not in pq and not visited:
                 //  add cur.zero to pq
                 //if cur.one not in pq and not visited:
                   //add cur.one to pq
 
-            //return transflist
+            //return transFunc
 
             return Content(states + newline + acc + newline + alpha + newline + input + newline + type);
         }
