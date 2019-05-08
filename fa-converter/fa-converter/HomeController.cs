@@ -20,18 +20,18 @@ namespace faconverter
             state otherState = obj as state;
 
             if (otherState != null)
-                return this.name.CompareTo(otherState.name);
+                return this.name.CompareTo(otherState.id);
             else
                 throw new ArgumentException("Jason has no idea what he's doing.");
         }
         public int CompareTo(state otherState)
         {
-            return this.name.CompareTo(otherState.name);
+            return this.name.CompareTo(otherState.id);
         }
 
         public string name;
         public int id;
-        public List<state**> next;
+        public List <List<state*>> next;
         public bool accept = false;
 
         public state(string n) { name = n; }
@@ -57,21 +57,35 @@ namespace faconverter
         {
             string newline = @"
 ";
+
+            //////////////////////////////////////////////////////////////////////////
+            // InitFunc Set up
+            //////////////////////////////////////////////////////////////////////////
+
+            //Primes for id
+            int[] primes = new int[] {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541};
+            int primetracker = 0;
+
+            //states
             int numStates = 0;
             for (int i = 0; i<states.Length; i++)
             {
-                if (input[i] != ',') { numStates++; }
+                if (states[i] != ',') { numStates++; }
             }
-
-            //states
+         
             List<state> initFunc = new List<state>(numStates);
             for (int i = 0; i<states.Length; i++)
             {
-                if (input[i] != ',')
+                if (states[i] != ',')
                 {
                     initFunc[i].name = states[i].ToString();
+                    initFunc[i].id = primes[primetracker];
+                    primetracker++;
                 }
             }
+
+            //initFunc.Sort(IComparer<state> IComparable)
+            //^^make compare function to pass as argument that specifies that they are sorted by id
 
             //acc
             for (int i = 0; i < acc.Length; i++)
@@ -103,7 +117,8 @@ namespace faconverter
 
             for (int i = 0; i < numStates; i++)
             {
-                initFunc[i].next = new List<List<string>>(numAlpha);
+                //initializes each next have size of number of letters in alphabet
+                initFunc[i].next = new List<List<state*>>(numAlpha);
             }
 
 
@@ -137,14 +152,30 @@ namespace faconverter
                 {
                     if (input[k] != ',')
                     {
-                        initFunc[curstate].next[curinput].Add(input[k].ToString());
-                    }
+                        //fix
+                        //initFunc[curstate].next[curinput].Add(input[k].ToString());
+
+                        //find state that matches input[k]
+                        for (int j = 0; j < numStates; j++)
+                        {
+                            if (initFunc[j].name == input[k].ToString())
+                            {
+                                //add to initFunc next
+                                initFunc[curstate].next[curinput].Add(&initFunc[j]);
+                            }
+                        }
+                    }   
                     k++;
                 }
                 i = k + 1;
             }
 
-            PriorityQueue<state> pq;
+
+            //////////////////////////////////////////////////////////////////////////
+            // Translation: the creation of TransFunc
+            //////////////////////////////////////////////////////////////////////////
+
+            PriorityQueue<state> pq = new PriorityQueue<state>();
             List<state> transFunc = new List<state>(0);
 
             //Add start state to pq
@@ -169,8 +200,7 @@ namespace faconverter
                 if (visit == false)
                 {
                     for (int i = 0; i < cur.name.Length; i++)
-                    {
-                        cur.visited = true;
+                    { 
                         for (int j = 0; j < numAlpha; j++)
                         {
                             string temp = "";
