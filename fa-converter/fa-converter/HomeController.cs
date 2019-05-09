@@ -31,11 +31,16 @@ namespace faconverter
 
         public string name;
         public int id;
-        public List <List<state*>> next;
+        //FIX: 
+        public List<List<state*>> next;
         public bool accept = false;
 
         public state(string n) { name = n; }
-        public state() { }
+        public state() {
+            name = "";
+            id = 1;
+            //FIX: initialize next so that bottom layer has size 1
+        }
     }
 
 
@@ -119,6 +124,10 @@ namespace faconverter
             {
                 //initializes each next have size of number of letters in alphabet
                 initFunc[i].next = new List<List<state*>>(numAlpha);
+                for (int j=0; j<numAlpha; j++)
+                {
+                    initFunc[i].next[j] = new List<state*>(1) { null };
+                }
             }
 
 
@@ -152,9 +161,6 @@ namespace faconverter
                 {
                     if (input[k] != ',')
                     {
-                        //fix
-                        //initFunc[curstate].next[curinput].Add(input[k].ToString());
-
                         //find state that matches input[k]
                         for (int j = 0; j < numStates; j++)
                         {
@@ -174,6 +180,7 @@ namespace faconverter
             //////////////////////////////////////////////////////////////////////////
             // Translation: the creation of TransFunc
             //////////////////////////////////////////////////////////////////////////
+            //////FIX: NEED TO MAKE RULE WITH FOR WHERE EPSILON STUFF GOES
 
             PriorityQueue<state> pq = new PriorityQueue<state>();
             List<state> transFunc = new List<state>(0);
@@ -181,16 +188,18 @@ namespace faconverter
             //Add start state to pq
             pq.Enqueue(initFunc[0]);
 
-
+            //while pq is not empty
             while (pq != null)
             {
+                //take state from pq
                 state cur = pq.Dequeue();
 
                 bool visit = false;
 
+                //FIX: check if cur is in transFunc[i] (binary search)
                 for (int i = 0; i < transFunc.Count; i++)
                 {
-                    if (transFunc[i].name == cur.name)
+                    if (transFunc[i].id == cur.id)
                     {
                         visit = true;
                         break;
@@ -199,55 +208,71 @@ namespace faconverter
 
                 if (visit == false)
                 {
-                    for (int i = 0; i < cur.name.Length; i++)
-                    { 
-                        for (int j = 0; j < numAlpha; j++)
+                    //for all characters in current state's name
+                    for (int i=0; i<cur.name.Length; i++)
+                    {
+                        state* namechar = null;
+
+                        //find state that matches input[k]
+                        for (int j = 0; j < numStates; j++)
                         {
-                            string temp = "";
-                            temp = temp + cur.next[j];
-                            cur.next = temp;
+                            if (initFunc[j].name == cur.name[i].ToString())
+                            {
+                                //add to initFunc next
+                                namechar = &initFunc[j];
+                            }
+                        }
+
+                        //initializes each next have size of number of letters in alphabet
+                        cur.next = new List<List<state*>>(numAlpha);
+
+                        //for all inputs possiblities
+                        for (int j=0; j<numAlpha; j++)
+                        {
+                            state curnext = null;
+
+                            cur.next[j] = new List<state*>(1);
+                            cur.next[j][0] = &curnext;
+
+
+                            //for all states that current character state goes to on current input
+                            for (int k; k < namechar->next[j].Count; k++)
+                            {
+                                if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
+                                {
+                                    cur.next[j][0]->id *= namechar->next[j][k]->id;
+                                    cur.next[j][0]->name += namechar->next[j][k]->name;
+                                }
+                            }
                         }
                     }
 
+                    //add cur to transFunc
                     transFunc.Add(cur);
 
+                    //add cur's next states to pq if not in transFunc
                     for (int j = 0; j < numAlpha; j++)
                     {
+                        bool vis = false;
+
+                        //FIX: check if cur.next[j][0] is in transFunc[k] (binary search)
                         for (int k = 0; k < transFunc.Count; k++)
                         {
-                            bool v = false;
-                            if (transFunc[k].name == cur.next[j][0])
+                            if (transFunc[k].id == cur.next[j][0]->id)
                             {
-                                v = true;
+                                vis = true;
                                 break;
                             }
                         }
 
-                        //add next elements if not visited and not in pq
-                        //not visited = not in transFunc
+                        //not visited => not in transFunc
+                        if (vis == false)
+                        {
+                            pq.Enqueue(*cur.next[j][0]);
+                        }
                     }
                 }
             }
-
-
-
-            //While(pq not empty):
-                //cur = element popped off pq
-
-                //for (i: 0 to cur.name.length):
-                //  cur.visited = true
-                //  cur.zero += cur.name[i].zero
-                //  cur.one = cur.name[i].one
-
-                //Add cur, 0, cur.zero to transFunc
-                //Add cur, 1, cur.one to transFunc
-
-                //if cur.zero not in pq and not visited:
-                //  add cur.zero to pq
-                //if cur.one not in pq and not visited:
-                  //add cur.one to pq
-
-            //return transFunc
 
             return Content(states + newline + acc + newline + alpha + newline + input + newline + type);
         }
