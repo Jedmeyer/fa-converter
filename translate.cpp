@@ -19,6 +19,16 @@ public:
       id = 1;
       //FIX: initialize next so that bottom layer has size 1
   }
+
+  //Comparison Operators
+  bool operator<(const State& s2){return(this->id < s2.id);};
+  bool operator>(const State& s2){return(this->id > s2.id);};
+  bool operator==(const State& s2){return(this->id == s2.id);};
+  bool operator!=(const State& s2){return(this->id != s2.id);};
+  bool operator<=(const State& s2){return(this->id <= s2.id);};
+  bool operator>=(const State& s2){return(this->id >= s2.id);};
+
+ 
   void printState(vector<char>alphaorder) {
     cout << "State " << name << endl;
     cout << "\tid " << id << endl;
@@ -33,6 +43,15 @@ public:
     }
   }
 };
+
+
+//More Comparison Operators
+bool operator<(const State& s1,const State& s2){return(s1.id < s2.id);};
+bool operator>(const State& s1,const State& s2){return(s1.id > s2.id);};
+bool operator==(const State& s1,const State& s2){return(s1.id == s2.id);};
+bool operator>=(const State& s1,const State& s2){return(s1.id >= s2.id);};
+bool operator<=(const State& s1,const State& s2){return(s1.id <= s2.id);};
+
 
 bool inStateList(vector<State> Func, State cur) {
   //FIX: check if cur is in transFunc[i] (binary search)
@@ -249,7 +268,21 @@ class Translate {
 
 void translate(string states, string acc, string alpha, string input, string type) {
   //Primes for id
-  int* primes = new int[100] {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541};
+  int* primes = new int[100] {2, 3, 5, 7, 11, 13, 17, 19,
+  23, 29, 31, 37, 41, 43, 47, 53,
+  59, 61, 67, 71, 73, 79, 83, 89,
+  97, 101, 103, 107, 109, 113, 127,
+  131, 137, 139, 149, 151, 157, 163,
+  167, 173, 179, 181, 191, 193, 197,
+  199, 211, 223, 227, 229, 233, 239,
+  241, 251, 257, 263, 269, 271, 277,
+  281, 283, 293, 307, 311, 313, 317,
+  331, 337, 347, 349, 353, 359, 367, 373,
+  379, 383, 389, 397, 401, 409, 419, 421,
+  431, 433, 439, 443, 449, 457, 461, 463,
+  467, 479, 487, 491, 499, 503, 509, 521, 523, 541};
+
+
   int primetracker = 0;
 
   //States
