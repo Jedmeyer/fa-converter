@@ -10,21 +10,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace faconverter
 {
-    public class state : IComparable<state>
+    public class State : IComparable<State>
     {
 
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
 
-            state otherState = obj as state;
+            State otherState = obj as State;
 
             if (otherState != null)
                 return this.name.CompareTo(otherState.id);
             else
                 throw new ArgumentException("Jason has no idea what he's doing.");
         }
-        public int CompareTo(state otherState)
+        public int CompareTo(State otherState)
         {
             return this.name.CompareTo(otherState.id);
         }
@@ -32,20 +32,19 @@ namespace faconverter
         public string name;
         public int id;
         //FIX: 
-        public List<List<state*>> next;
+        public List<List<State*>> next;
         public bool accept = false;
 
-        public state(string n) { name = n; }
-        public state() {
+        public State(string n) { name = n; }
+        public State() {
             name = "";
             id = 1;
             //FIX: initialize next so that bottom layer has size 1
         }
     }
 
-
     [Route("/")]
-    public class HomeController : Controller
+    public unsafe class HomeController : Controller
     {
         //
         // GET: /Home/
@@ -58,7 +57,7 @@ namespace faconverter
 
         [HttpGet]
         [Route("/Build")]
-        public ActionResult Build(string states, string acc, string alpha, string input, string type)
+        public ActionResult Build(string States, string acc, string alpha, string input, string type)
         {
             string newline = @"
 ";
@@ -71,25 +70,25 @@ namespace faconverter
             int[] primes = new int[] {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541};
             int primetracker = 0;
 
-            //states
+            //States
             int numStates = 0;
-            for (int i = 0; i<states.Length; i++)
+            for (int i = 0; i<States.Length; i++)
             {
-                if (states[i] != ',') { numStates++; }
+                if (States[i] != ',') { numStates++; }
             }
          
-            List<state> initFunc = new List<state>(numStates);
-            for (int i = 0; i<states.Length; i++)
+            List<State> initFunc = new List<State>(numStates);
+            for (int i = 0; i<States.Length; i++)
             {
-                if (states[i] != ',')
+                if (States[i] != ',')
                 {
-                    initFunc[i].name = states[i].ToString();
+                    initFunc[i].name = States[i].ToString();
                     initFunc[i].id = primes[primetracker];
                     primetracker++;
                 }
             }
 
-            //initFunc.Sort(IComparer<state> IComparable)
+            //initFunc.Sort(IComparer<State> IComparable)
             //^^make compare function to pass as argument that specifies that they are sorted by id
 
             //acc
@@ -123,16 +122,16 @@ namespace faconverter
             for (int i = 0; i < numStates; i++)
             {
                 //initializes each next have size of number of letters in alphabet
-                initFunc[i].next = new List<List<state*>>(numAlpha);
+                initFunc[i].next = new List<List<State*>>(numAlpha);
                 for (int j=0; j<numAlpha; j++)
                 {
-                    initFunc[i].next[j] = new List<state*>(1) { null };
+                    initFunc[i].next[j] = new List<State*>(1) { null };
                 }
             }
 
 
             //input
-            int curstate = -1;
+            int curState = -1;
             int curinput = -1;
             for (int i=0; i<input.Length; i++)
             {
@@ -140,7 +139,7 @@ namespace faconverter
                 {
                     if (initFunc[j].name == input[i].ToString())
                     {
-                        curstate = j;
+                        curState = j;
                         break;
                     }
                 }
@@ -161,13 +160,13 @@ namespace faconverter
                 {
                     if (input[k] != ',')
                     {
-                        //find state that matches input[k]
+                        //find State that matches input[k]
                         for (int j = 0; j < numStates; j++)
                         {
                             if (initFunc[j].name == input[k].ToString())
                             {
                                 //add to initFunc next
-                                initFunc[curstate].next[curinput].Add(&initFunc[j]);
+                                initFunc[curState].next[curinput].Add(&initFunc[j]);
                             }
                         }
                     }   
@@ -176,23 +175,22 @@ namespace faconverter
                 i = k + 1;
             }
 
-
             //////////////////////////////////////////////////////////////////////////
             // Translation: the creation of TransFunc
             //////////////////////////////////////////////////////////////////////////
             //////FIX: NEED TO MAKE RULE WITH FOR WHERE EPSILON STUFF GOES
 
-            PriorityQueue<state> pq = new PriorityQueue<state>();
-            List<state> transFunc = new List<state>(0);
+            PriorityQueue<State> pq = new PriorityQueue<State>();
+            List<State> transFunc = new List<State>(0);
 
-            //Add start state to pq
+            //Add start State to pq
             pq.Enqueue(initFunc[0]);
 
             //while pq is not empty
             while (pq != null)
             {
-                //take state from pq
-                state cur = pq.Dequeue();
+                //take State from pq
+                State cur = pq.Dequeue();
 
                 bool visit = false;
 
@@ -208,12 +206,12 @@ namespace faconverter
 
                 if (visit == false)
                 {
-                    //for all characters in current state's name
+                    //for all characters in current State's name
                     for (int i=0; i<cur.name.Length; i++)
                     {
-                        state* namechar = null;
+                        State* namechar = null;
 
-                        //find state that matches input[k]
+                        //find State that matches input[k]
                         for (int j = 0; j < numStates; j++)
                         {
                             if (initFunc[j].name == cur.name[i].ToString())
@@ -221,21 +219,21 @@ namespace faconverter
                                 //add to initFunc next
                                 namechar = &initFunc[j];
                             }
-                        }
+                        } 
 
-                        //initializes each next have size of number of letters in alphabet
-                        cur.next = new List<List<state*>>(numAlpha);
+                        //initializes each next to have size of number of letters in alphabet
+                        cur.next = new List<List<State*>>(numAlpha);
 
-                        //for all inputs possiblities
+                        //for all input possiblities
                         for (int j=0; j<numAlpha; j++)
                         {
-                            state curnext = null;
+                            State curnext = null;
 
-                            cur.next[j] = new List<state*>(1);
+                            cur.next[j] = new List<State*>(1);
                             cur.next[j][0] = &curnext;
 
 
-                            //for all states that current character state goes to on current input
+                            //for all States that current character State goes to on current input
                             for (int k; k < namechar->next[j].Count; k++)
                             {
                                 if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
@@ -250,7 +248,7 @@ namespace faconverter
                     //add cur to transFunc
                     transFunc.Add(cur);
 
-                    //add cur's next states to pq if not in transFunc
+                    //add cur's next States to pq if not in transFunc
                     for (int j = 0; j < numAlpha; j++)
                     {
                         bool vis = false;
@@ -274,7 +272,7 @@ namespace faconverter
                 }
             }
 
-            return Content(states + newline + acc + newline + alpha + newline + input + newline + type);
+            return Content(States + newline + acc + newline + alpha + newline + input + newline + type);
         }
 
         [HttpPost]
