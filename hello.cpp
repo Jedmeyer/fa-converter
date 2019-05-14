@@ -3,36 +3,47 @@
 #include <cppcms/service.h>
 #include <cppcms/http_response.h>
 #include <cppcms/http_request.h>
-#include <map>
+#include<map>
 #include <iostream>
+#include<sstream>
 #include <fstream>
+#include<vector>
 
 
-class hello : public cppcms::application {
+using namespace std;
+
+class my_hello_world : public cppcms::application {
 public:
-    hello(cppcms::service &srv) :
+    my_hello_world(cppcms::service &srv) :
         cppcms::application(srv) 
     {
-        dispatcher().assign("/proc",&hello::proc,this);
-        mapper().assign("proc","/proc");
-
-        dispatcher().assign("",&hello::main,this);  
-        mapper().assign("");
         
-        mapper().root("/");  
-    }
 
+    }
     virtual void main(std::string url);
-    virtual void proc(std::string url);
 };
 
-void hello::main(std::string /*url*/)
+void my_hello_world::main(std::string /*url*/)
 {
-    std::string myString = request().query_string();
-    std::ifstream webpage;
-    std::string line;
+    string qstring = request().query_string();
+    ifstream webpage;
+    string line;
     webpage.open("./html-pages/front-page.html");    
     
+
+
+
+    istringstream f(qstring);
+    vector<string> qparsed;
+
+    string s;    
+    while(getline(f, s, ','))
+    {
+        qparsed.push_back(s);
+        response().out() << s;
+    }
+    
+
     if (webpage.is_open())
     {
         while ( getline (webpage,line) )
@@ -42,29 +53,18 @@ void hello::main(std::string /*url*/)
         webpage.close();
     }
 
-
 }
 
-virtual void proc(std::string url)
-{
-    std::string myString = request().query_string();
 
 
-    response().out() <<
-            "<html>\n"  
-        "<body>\n"  
-        "  <h1>"<< myString <<  "</h1>\n"  
-        "</body>\n"  
-        "</html>\n";  
 
-}
 
 
 int main(int argc,char ** argv)
 {
     try {
         cppcms::service srv(argc,argv);
-        srv.applications_pool().mount(cppcms::applications_factory<hello>());
+        srv.applications_pool().mount(cppcms::applications_factory<my_hello_world>());
         srv.run();
     }
     catch(std::exception const &e) {
