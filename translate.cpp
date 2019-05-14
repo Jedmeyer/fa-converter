@@ -4,6 +4,8 @@
 #include <vector>
 using namespace std;
 
+
+
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 class State {
 public:
@@ -19,7 +21,19 @@ public:
       id = 1;
       //FIX: initialize next so that bottom layer has size 1
   }
+  bool operator<(const State& s2){return(this->id < s2.id);};
+  bool operator>(const State& s2){return(this->id > s2.id);};
+  bool operator==(const State& s2){return(this->id == s2.id);};
+  bool operator!=(const State& s2){return(this->id != s2.id);};
+  bool operator<=(const State& s2){return(this->id <= s2.id);};
+  bool operator>=(const State& s2){return(this->id >= s2.id);};
+
+
 };
+
+
+
+}
 
 bool inStateList(vector<State> Func, State cur) {
   //FIX: check if cur is in transFunc[i] (binary search)
