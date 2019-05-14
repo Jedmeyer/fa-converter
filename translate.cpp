@@ -4,6 +4,8 @@
 #include <vector>
 using namespace std;
 
+
+
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 class State {
 public:
@@ -19,6 +21,14 @@ public:
       id = 1;
       //FIX: initialize next so that bottom layer has size 1
   }
+  bool operator<(const State& s2){return(this->id < s2.id);};
+  bool operator>(const State& s2){return(this->id > s2.id);};
+  bool operator==(const State& s2){return(this->id == s2.id);};
+  bool operator!=(const State& s2){return(this->id != s2.id);};
+  bool operator<=(const State& s2){return(this->id <= s2.id);};
+  bool operator>=(const State& s2){return(this->id >= s2.id);};
+
+
   void printState(vector<char>alphaorder) {
     cout << "State " << name << endl;
     cout << "\tid " << id << endl;
@@ -33,6 +43,10 @@ public:
     }
   }
 };
+
+
+
+}
 
 bool inStateList(vector<State> Func, State cur) {
   //FIX: check if cur is in transFunc[i] (binary search)
@@ -101,7 +115,7 @@ void translate(string states, string acc, string alpha, string input, string typ
   //alpha
   int numAlpha = 0;
   vector<char> alphaorder(0);
-  for (int i=0; i<alpha.length(); i++)
+  for(int i=0; i<alpha.length(); i++)
   {
       if (alpha[i]!=',')
       {
