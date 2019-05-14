@@ -1,0 +1,27 @@
+
+
+
+
+
+
+
+Converting Elements function:
+  Add start state to pq
+
+  While(pq not empty):
+    cur = element popped off pq
+
+    for(i: 0 to cur.name.length):
+      cur.visited = true
+      cur.zero += cur.name[i].zero
+      cur.one = cur.name[i].one
+
+    Add cur, 0, cur.zero to transflist
+    Add cur, 1, cur.one to transflist
+
+    if cur.zero not in pq and not visited:
+      add cur.zero to pq
+    if cur.one not in pq and not visited:
+      add cur.one to pq
+
+  return transflist

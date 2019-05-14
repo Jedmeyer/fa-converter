@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <b>Enter the Transition Functions for a Finite Automata below:</b>
+</head>
+
+<body>
+
+    <script>
+        function myFunction() {
+            var div = document.getElementById('TransFunc');
+            clone = div.cloneNode(true);
+            document.getElementById("Funcs").appendChild(clone);
+        }
+    </script>
+
+    <p id="test">
+        Example: 𝛿(current_state, input_symbol) = {next_state}<br>
+        If there are multiple next states, separate them by a common (ex: B,D,E)
+    </p>
+
+    <script>
+        function parse() {
+            var children = document.getElementById('Funcs').childNodes;
+            var array = Array.from(children);
+            var curUrl = location.href;
+
+            var inputs = document.getElementsByTagName("input");
+            var inputs = Array.from(inputs);
+
+            var state_str = '';
+            var acc_str = '';
+            var alpha_str = '';
+
+
+
+            var bigstr = '';
+            var inc = 0;
+            inputs.forEach(function (element) {
+                if (element.value == null || element.value == 'Submit') {
+                    return;
+                }
+
+                if (inc == 0) {
+                    state_str = element.value;
+                }
+                else if (inc == 1) {
+                    acc_str = element.value;
+                }
+                else if (inc == 2) {
+                    alpha_str = element.value;
+                }
+                else if (inc > 2){
+                    var str = element.value;
+                    str.trim();
+                    bigstr = bigstr + str + ';';
+                }
+                inc = inc + 1;
+            })
+
+            
+            console.log(state_str);
+            console.log(acc_str);
+            console.log(alpha_str);
+            console.log(bigstr);
+           
+
+            var newUrl = curUrl + "Build" + "?states=" + state_str + "&acc=" + acc_str + "&alpha=" + alpha_str + "&input=" + bigstr + "&type=NFA"
+            window.location = newUrl
+
+        }
+    </script>
+
+
+    <div>
+        States = {<input type="text" name="states" value="" maxlength="99">}
+    </div>
+    <br />
+
+    <div>
+        Acc_States = {<input type="text" name="acc_states" value="" maxlength="99">}
+    </div>
+
+    <br />
+
+    <div>
+        Alphabet {<input type="text" name="alphabet" value="" maxlength="99">}
+    </div>
+
+    <br />
+
+    <button onclick="myFunction()" type="submit" value="+">Add More Transition Functions</button> 
+    
+    <br />
+    <br/>
+
+    <div>
+
+        <div id="Funcs">
+
+            <div id="TransFunc" display="block">
+                𝛿( <input type="text" name="curstate" value="" maxlength="1" size="1">,<input type="text" name="input" value="" maxlength="1" size="1"> ) = {<input type="text" name="nextstate" value="" maxlength="20">}<br>
+            </div>
+
+        </div>
+        <br>
+        <input onclick="parse()" type="submit" value="Submit">
+    </div>
+
+
+    <p>Click the "Submit" button</p>
+
+</body>
+</html>
