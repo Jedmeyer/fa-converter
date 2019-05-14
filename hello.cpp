@@ -5,6 +5,8 @@
 #include <cppcms/http_request.h>
 #include<map>
 #include <iostream>
+#include <fstream>
+
 
 class my_hello_world : public cppcms::application {
 public:
@@ -19,13 +21,20 @@ public:
 void my_hello_world::main(std::string /*url*/)
 {
     std::string myString = request().query_string();
-    response().out()<<
-        "<html>\n"
-        "<body>\n"
-        "<h1>" << myString <<
-        "</h1>\n"
-        "</body>\n"
-        "</html>\n";
+    std::ifstream webpage;
+    std::string line;
+    webpage.open("./html-pages/front-page.html");    
+    
+    if (webpage.is_open())
+    {
+        while ( getline (webpage,line) )
+        {
+            response().out() << line << '\n';
+        }   
+        webpage.close();
+    }
+
+
 }
 
 int main(int argc,char ** argv)
