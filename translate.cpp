@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 class State {
 public:
   string name;
@@ -101,8 +101,6 @@ void translate(string states, string acc, string alpha, string input, string typ
       }
   }
 
-  //initFunc.Sort(IComparer<State> IComparable)
-  //^^make compare function to pass as argument that specifies that they are sorted by id
 
   //acc
   for (int i = 0; i < acc.length(); i++)
