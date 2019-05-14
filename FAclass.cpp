@@ -52,6 +52,16 @@ bool operator==(const State& s1,const State& s2){return(s1.id == s2.id);};
 bool operator>=(const State& s1,const State& s2){return(s1.id >= s2.id);};
 bool operator<=(const State& s1,const State& s2){return(s1.id <= s2.id);};
 
+//calculates size of array
+int arrsize (char * arr) {
+  int size = 0;
+  int i = 0;
+  while (arr[i]!='\0') {
+    size++;
+    i++;
+  }
+  return size;
+}
 
 class FA {
   //Primes for id
@@ -70,13 +80,13 @@ class FA {
   467, 479, 487, 491, 499, 503, 509, 521, 523, 541};
   int primetracker = 0;
   int numStates = 0;
-  vector<State>initFunc;
+  vector<State>initFA;
   int numAlpha = 0;
   vector<char> alphaorder;
-  vector<State> transFunc;
+  vector<State> transFA;
 
   public: bool inStateList(vector<State> Func, State cur) {
-    //FIX: check if cur is in transFunc[i] (binary search)
+    //FIX: check if cur is in transFA[i] (binary search)
     for (int i = 0; i < Func.size(); i++)
     {
         if (Func[i].id == cur.id)
@@ -89,13 +99,13 @@ class FA {
 
    public: void incomingFA(string states, string acc, string alpha, string input, string type) {
     //States
-    initFunc.resize(0);
+    initFA.resize(0);
     for (int i = 0; i<states.length(); i++)
     {
         if (states[i] != ',' & states[i] != ' ')
         {
-            initFunc.push_back(string(1,states[i]));
-            initFunc[numStates].id = primes[primetracker];
+            initFA.push_back(string(1,states[i]));
+            initFA[numStates].id = primes[primetracker];
             numStates++;
             primetracker++;
         }
@@ -108,9 +118,9 @@ class FA {
         {
             for (int j=0; j < numStates; j++)
             {
-                if (initFunc[j].name == string(1,acc[i]))
+                if (initFA[j].name == string(1,acc[i]))
                 {
-                    initFunc[j].accept = true;
+                    initFA[j].accept = true;
                     break;
                 }
             }
@@ -131,7 +141,7 @@ class FA {
     for (int i = 0; i < numStates; i++)
     {
         //initializes each next have size of number of letters in alphabet
-        initFunc[i].next.resize(numAlpha); //= new vector<vector<State*>>(numAlpha);
+        initFA[i].next.resize(numAlpha); //= new vector<vector<State*>>(numAlpha);
     }
 
     //input
@@ -142,7 +152,7 @@ class FA {
         //find origin state
         for (int j = 0; j < numStates; j++)
         {
-            if (initFunc[j].name == string(1,input[i]))
+            if (initFA[j].name == string(1,input[i]))
             {
                 curState = j;
                 break;
@@ -169,10 +179,10 @@ class FA {
                 //find State that matches input[k]
                 for (int j = 0; j < numStates; j++)
                 {
-                    if (initFunc[j].name == string(1,input[i]))
+                    if (initFA[j].name == string(1,input[i]))
                     {
-                        //add to initFunc next
-                        initFunc[curState].next[curinput].push_back(&initFunc[j]);
+                        //add to initFA next
+                        initFA[curState].next[curinput].push_back(&initFA[j]);
                         break;
                     }
                 }
@@ -181,9 +191,9 @@ class FA {
         }
     }
 
-    cout << "initFunc data:" << endl;
+    cout << "initFA data:" << endl;
     for (int i=0; i<numStates; i++) {
-      initFunc[i].printState(alphaorder);
+      initFA[i].printState(alphaorder);
     }
     cout << endl << endl;
   }
@@ -193,10 +203,10 @@ class FA {
     //////FIX: NEED TO MAKE RULE WITH FOR WHERE EPSILON STUFF GOES
 
     priority_queue<State> pq;
-    transFunc.resize(0);
+    transFA.resize(0);
 
     //Add start State to pq
-    pq.push(initFunc[0]);
+    pq.push(initFA[0]);
 
     //while pq is not empty
     while (!pq.empty())
@@ -204,7 +214,7 @@ class FA {
         //take State from pq
         State cur = pq.top();
         pq.pop();
-        bool visit = inStateList(transFunc,cur);
+        bool visit = inStateList(transFA,cur);
 
         //initializes each next to have size of number of letters in alphabet
         cur.next.resize(numAlpha);
@@ -221,10 +231,10 @@ class FA {
                 //find State that matches input[k]
                 for (int j = 0; j < numStates; j++)
                 {
-                    if (initFunc[j].name == string(1,cur.name[i]))
+                    if (initFA[j].name == string(1,cur.name[i]))
                     {
-                        //add to initFunc next
-                        namechar = &initFunc[j];
+                        //add to initFA next
+                        namechar = &initFA[j];
                     }
                 }
 
@@ -257,15 +267,15 @@ class FA {
                 }
             }
 
-            //add cur to transFunc
-            transFunc.push_back(cur);
+            //add cur to transFA
+            transFA.push_back(cur);
 
-            //add cur's next States to pq if not in transFunc
+            //add cur's next States to pq if not in transFA
             for (int j = 0; j < numAlpha; j++)
             {
-                bool vis = inStateList(transFunc,*cur.next[j][0]);
+                bool vis = inStateList(transFA,*cur.next[j][0]);
 
-                //not visited => not in transFunc
+                //not visited => not in transFA
                 if (!vis)
                 {
                     //cout << "Adding " << cur.next[j][0]->name << " to pq" << endl;
@@ -275,10 +285,84 @@ class FA {
         }
     }
 
-    cout << "TransFunc data: " << endl;
-    for (int i=0; i<transFunc.size(); i++) {
-      transFunc[i].printState(alphaorder);
+    cout << "transFA data: " << endl;
+    for (int i=0; i<transFA.size(); i++) {
+      transFA[i].printState(alphaorder);
     }
+  }
+
+   /* recursive function that determines determines where the input should go on
+  each branch and outputs true if any of the branches end in an accept state */
+  public:bool branch(int& t, int i, char * input, State * cur) {
+
+    string tab = string(i*4,' '); //organizes output based on value of i
+    int inputsize = arrsize(input); //size of input
+
+    if (i<inputsize) {
+      int size;  //size of next
+      int curinput;
+
+      //finds input for cur.next
+      for (int j = 0; j<numAlpha; j++) {
+        if (alphaorder[j] == input[i]) {
+          curinput = j;
+          break;
+        }
+      }
+
+      size = cur->next[curinput].size();
+
+      //if no next state for input, terminate branch
+      if (size == 0) {
+        //output location information
+        cout << tab << "Current state: " << cur->name << endl;
+        cout << tab << "Input: " << input[i] << endl;
+        cout << tab << "i: " << i << endl;
+        cout << tab << "Branch terminated." << endl << endl;
+        return NULL;
+      }
+
+      i++; //increment i to get next character in input
+      //call branch for all possible next states
+      for(int j = 0; j<size; j++) {
+        //output location information
+        cout << tab << "Current state: " << cur->name << endl;
+        cout << tab << "Input: " << input[i-1] << endl;
+        cout << tab << "i: " << i-1 << endl;
+        cout << tab << "Branch: " << j+1 << " of " << size << endl;
+        cout << tab << "To state: " << cur->next[curinput][j]->name << endl << endl;
+
+        //if all characters have been inputed, then next state is final state.
+        if (i == inputsize) {
+          //next[j] = next[j]->e_next[0];
+          cout << tab << "Branch final state: " << cur->next[curinput][j]->name << endl << endl;
+          //increment t if final state is an accept state
+          if (cur->next[curinput][j]->accept == true) {
+            t++;
+          }
+        }
+        //call branch for the next state
+        branch(t,i,input,cur->next[curinput][j]);
+      }
+    }
+    //return true if any branch ends in an accept state
+    if (t > 0)
+      return true;
+    else
+      return false;
+  }
+
+
+  public: void simulate(char * input) {
+    //call branch function to simulate input moving through states and cout results
+    int startstate = 0;
+    int t = 0; //tabs
+    cout << "INPUT: " << input << endl << endl;
+    if (branch(t,0,input,&initFA[startstate]) == true)
+      cout << "Input " << input << " accepted." << endl;
+    else
+      cout << "Input " << input << " not accepted."<< endl;
+    cout << endl << endl;
   }
 };
 
@@ -287,4 +371,6 @@ int main() {
   FA f;
   f.incomingFA("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "string");
   f.translateFA();
+  f.simulate("010011");
+  f.simulate("010101");
 }
