@@ -15,11 +15,11 @@ public:
 
 void my_hello_world::main(std::string /*url*/url)
 {
-    request().
+    string s = request().get("name");
     response().out()<<
         "<html>\n"
         "<body>\n"
-        "<h1>" << QUERY_STRING <<
+        "<h1>" << s <<
         "</h1>\n"
         "</body>\n"
         "</html>\n";
