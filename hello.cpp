@@ -15,7 +15,7 @@ public:
 
 void my_hello_world::main(std::string /*url*/url)
 {
-    string s = request().get("name");
+    std::string s = request().get("name");
     response().out()<<
         "<html>\n"
         "<body>\n"
