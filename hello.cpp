@@ -2,6 +2,8 @@
 #include <cppcms/applications_pool.h>
 #include <cppcms/service.h>
 #include <cppcms/http_response.h>
+#include <cppcms/http_request.h>
+#include<map>
 #include <iostream>
 
 class my_hello_world : public cppcms::application {
@@ -9,17 +11,18 @@ public:
     my_hello_world(cppcms::service &srv) :
         cppcms::application(srv) 
     {
+
     }
     virtual void main(std::string url);
 };
 
-void my_hello_world::main(std::string /*url*/url)
+void my_hello_world::main(std::string /*url*/)
 {
-    std::string s = request().get("name");
+    std::string myString = request().query_string();
     response().out()<<
         "<html>\n"
         "<body>\n"
-        "<h1>" << s <<
+        "<h1>" << myString <<
         "</h1>\n"
         "</body>\n"
         "</html>\n";
