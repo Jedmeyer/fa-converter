@@ -29,6 +29,19 @@ public:
   bool operator>=(const State& s2){return(this->id >= s2.id);};
 
 
+  void printState(vector<char>alphaorder) {
+    cout << "State " << name << endl;
+    cout << "\tid " << id << endl;
+    cout << "\taccept " << accept << endl;
+    for (int i=0; i<next.size(); i++) {
+      cout <<"\tinput " << alphaorder[i] << endl;
+      cout << "\t\t";
+      for (int j=0; j<next[i].size(); j++) {
+        cout << next[i][j]->name << ", ";
+      }
+      cout << endl;
+    }
+  }
 };
 
 
@@ -92,7 +105,7 @@ void translate(string states, string acc, string alpha, string input, string typ
   //alpha
   int numAlpha = 0;
   vector<char> alphaorder(0);
-  for (int i=0; i<alpha.length(); i++)
+  for(int i=0; i<alpha.length(); i++)
   {
       if (alpha[i]!=',')
       {
@@ -157,6 +170,11 @@ void translate(string states, string acc, string alpha, string input, string typ
       i = k + 1;
   }
 
+  for (int i=0; i<numStates; i++) {
+    initFunc[i].printState(alphaorder);
+  }
+
+
   //////////////////////////////////////////////////////////////////////////
   // Translation: the creation of TransFunc
   //////////////////////////////////////////////////////////////////////////
@@ -199,14 +217,13 @@ void translate(string states, string acc, string alpha, string input, string typ
               //for all input possiblities
               for (int j=0; j<numAlpha; j++)
               {
-                  State curnext = NULL;
-
+                  //State curnext = NULL;
                   cur.next[j].resize(1);
-                  cur.next[j][0] = &curnext;
+                  cur.next[j][0] = NULL;//&curnext;
 
 
                   //for all States that current character State goes to on current input
-                  for (int k; k < namechar->next[j].size(); k++)
+                  for (int k = 0; k < namechar->next[j].size(); k++)
                   {
                       if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
                       {
@@ -233,6 +250,11 @@ void translate(string states, string acc, string alpha, string input, string typ
           }
       }
   }
+
+  for (int i=0; i<transFunc.size(); i++) {
+    transFunc[i].printState(alphaorder);
+  }
+
 }
 
 
