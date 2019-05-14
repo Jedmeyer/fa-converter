@@ -1,0 +1,5 @@
+#Here's how to run this thing:
+
+cppcms_run -h 157.230.188.32 -p 80 hello -c config.js
+
+#cppcms_run provides a nginx webserver to handle the requests - where it does the routing to your c++ scripts and code.

@@ -16,4 +16,7 @@
   <ItemGroup>
     <Content Remove="Pages\Index.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="HomeController.cs" />
+  </ItemGroup>
 </Project>
