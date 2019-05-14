@@ -13,12 +13,13 @@ public:
     virtual void main(std::string url);
 };
 
-void my_hello_world::main(std::string /*url*/)
+void my_hello_world::main(std::string /*url*/url)
 {
     response().out()<<
         "<html>\n"
         "<body>\n"
-        "  <h1>Hello World</h1>\n"
+        "<h1>" << url <<
+        "</h1>\n"
         "</body>\n"
         "</html>\n";
 }
