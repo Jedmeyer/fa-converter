@@ -5,7 +5,6 @@
 using namespace std;
 
 
-
 class State {
 public:
   string name;
@@ -15,11 +14,13 @@ public:
   bool accept = false;
 
   State(string n) { name = n; }
+  State(string n,int iden) {name = n; id = iden;}
   State() {
       name = "";
       id = 1;
       //FIX: initialize next so that bottom layer has size 1
   }
+
   //Comparison Operators
   bool operator<(const State& s2){return(this->id < s2.id);};
   bool operator>(const State& s2){return(this->id > s2.id);};
@@ -37,12 +38,13 @@ public:
       cout <<"\tinput " << alphaorder[i] << endl;
       cout << "\t\t";
       for (int j=0; j<next[i].size(); j++) {
-        cout << next[i][j]->name << ", ";
+        if (next[i][j]!=NULL) {cout << next[i][j]->name << ", ";}
       }
       cout << endl;
     }
   }
 };
+
 
 //More Comparison Operators
 bool operator<(const State& s1,const State& s2){return(s1.id < s2.id);};
@@ -50,9 +52,6 @@ bool operator>(const State& s1,const State& s2){return(s1.id > s2.id);};
 bool operator==(const State& s1,const State& s2){return(s1.id == s2.id);};
 bool operator>=(const State& s1,const State& s2){return(s1.id >= s2.id);};
 bool operator<=(const State& s1,const State& s2){return(s1.id <= s2.id);};
-
-
-
 
 
 bool inStateList(vector<State> Func, State cur) {
@@ -67,7 +66,9 @@ bool inStateList(vector<State> Func, State cur) {
   return false;
 }
 
+
 void translate(string states, string acc, string alpha, string input, string type) {
+
   //Primes for id
   int* primes = new int[100] {2, 3, 5, 7, 11, 13, 17, 19,
   23, 29, 31, 37, 41, 43, 47, 53,
@@ -88,18 +89,14 @@ void translate(string states, string acc, string alpha, string input, string typ
 
   //States
   int numStates = 0;
+  vector<State>initFunc(0);
   for (int i = 0; i<states.length(); i++)
   {
-      if (states[i] != ',') { numStates++; }
-  }
-
-  State* initFunc = new State[numStates];
-  for (int i = 0; i<states.length(); i++)
-  {
-      if (states[i] != ',')
+      if (states[i] != ',' & states[i] != ' ')
       {
-          initFunc[i].name = string(1,states[i]);
-          initFunc[i].id = primes[primetracker];
+          initFunc.push_back(string(1,states[i]));
+          initFunc[numStates].id = primes[primetracker];
+          numStates++;
           primetracker++;
       }
   }
@@ -108,7 +105,7 @@ void translate(string states, string acc, string alpha, string input, string typ
   //acc
   for (int i = 0; i < acc.length(); i++)
   {
-      if (acc[i] != ',')
+      if (acc[i] != ',' & acc[i] != ' ')
       {
           for (int j=0; j < numStates; j++)
           {
@@ -124,9 +121,9 @@ void translate(string states, string acc, string alpha, string input, string typ
   //alpha
   int numAlpha = 0;
   vector<char> alphaorder(0);
-  for(int i=0; i<alpha.length(); i++)
+  for (int i=0; i<alpha.length(); i++)
   {
-      if (alpha[i]!=',')
+      if (alpha[i]!=',' & alpha[i]!=' ')
       {
           alphaorder.push_back(alpha[i]);
           numAlpha++;
@@ -137,18 +134,19 @@ void translate(string states, string acc, string alpha, string input, string typ
   {
       //initializes each next have size of number of letters in alphabet
       initFunc[i].next.resize(numAlpha); //= new vector<vector<State*>>(numAlpha);
-      for (int j=0; j<numAlpha; j++)
-      {
-          initFunc[i].next[j].resize(1);
-          initFunc[i].next[j][0] = NULL;
-      }
+      // for (int j=0; j<numAlpha; j++)
+      // {
+      //     initFunc[i].next[j] = NULL;
+      // }
   }
+
 
   //input
   int curState = -1;
   int curinput = -1;
   for (int i=0; i<input.length(); i++)
   {
+      //find origin state
       for (int j = 0; j < numStates; j++)
       {
           if (initFunc[j].name == string(1,input[i]))
@@ -157,8 +155,9 @@ void translate(string states, string acc, string alpha, string input, string typ
               break;
           }
       }
-      i += 2;
+      i += 2; //move to input
 
+      //find input value
       for (int j = 0; j < numAlpha; j++)
       {
           if (input[i] == alphaorder[j])
@@ -167,31 +166,33 @@ void translate(string states, string acc, string alpha, string input, string typ
               break;
           }
       }
-      i += 2;
+      i+=2; //move to nextstates
 
-      int k = i;
-      while(input[k] != ';')
+      //find next states
+      while(input[i] != ';' & i<input.length())
       {
-          if (input[k] != ',')
+          if (input[i] != ',' & input[i] !=' ')
           {
               //find State that matches input[k]
               for (int j = 0; j < numStates; j++)
               {
-                  if (initFunc[j].name == string(1,input[k]))
+                  if (initFunc[j].name == string(1,input[i]))
                   {
                       //add to initFunc next
                       initFunc[curState].next[curinput].push_back(&initFunc[j]);
+                      break;
                   }
               }
           }
-          k++;
+          i++;
       }
-      i = k + 1;
   }
 
+  cout << "initFunc data:" << endl;
   for (int i=0; i<numStates; i++) {
     initFunc[i].printState(alphaorder);
   }
+  cout << endl << endl;
 
 
   //////////////////////////////////////////////////////////////////////////
@@ -213,7 +214,12 @@ void translate(string states, string acc, string alpha, string input, string typ
       pq.pop();
       bool visit = inStateList(transFunc,cur);
 
-      if (visit == false)
+      //initializes each next to have size of number of letters in alphabet
+      cur.next.resize(numAlpha);
+
+      //cout << "Current state " << cur.name << ", visit " << visit << endl;
+
+      if (!visit & cur.name!="")
       {
           //for all characters in current State's name
           for (int i=0; i<cur.name.length(); i++)
@@ -230,26 +236,32 @@ void translate(string states, string acc, string alpha, string input, string typ
                   }
               }
 
-              //initializes each next to have size of number of letters in alphabet
-              cur.next.resize(numAlpha);
+              //cout << "\tCurrent char state: " << namechar->name << endl;
 
               //for all input possiblities
               for (int j=0; j<numAlpha; j++)
               {
-                  //State curnext = NULL;
-                  cur.next[j].resize(1);
-                  cur.next[j][0] = NULL;//&curnext;
 
+                if (i == 0) {
+                  State * curnext = new State;
+                  cur.next[j].resize(1);
+                  cur.next[j][0] = curnext;
+                }
+
+                  //cout << "\t\tCurrent input: " << j << endl;
 
                   //for all States that current character State goes to on current input
                   for (int k = 0; k < namechar->next[j].size(); k++)
                   {
                       if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
                       {
+                          //cout << "\t\t\tadding to nextstate ";
                           cur.next[j][0]->id *= namechar->next[j][k]->id;
                           cur.next[j][0]->name += namechar->next[j][k]->name;
+                          //cout << "name: " << cur.next[j][0]->name << " id " << cur.next[j][0]->id << endl;
                       }
                   }
+                  //cout << "\tFinal next state" << "name: " << cur.next[j][0]->name << " id " << cur.next[j][0]->id << endl;
               }
           }
 
@@ -259,17 +271,19 @@ void translate(string states, string acc, string alpha, string input, string typ
           //add cur's next States to pq if not in transFunc
           for (int j = 0; j < numAlpha; j++)
           {
-              bool vis = inStateList(transFunc,cur);
+              bool vis = inStateList(transFunc,*cur.next[j][0]);
 
               //not visited => not in transFunc
-              if (vis == false)
+              if (!vis)
               {
+                  //cout << "Adding " << cur.next[j][0]->name << " to pq" << endl;
                   pq.push(*cur.next[j][0]);
               }
           }
       }
   }
 
+  cout << "TransFunc data: " << endl;
   for (int i=0; i<transFunc.size(); i++) {
     transFunc[i].printState(alphaorder);
   }
@@ -278,5 +292,7 @@ void translate(string states, string acc, string alpha, string input, string typ
 
 
 int main() {
-  translate("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D", "string");
+  translate("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "string");
+  //Translate t;
+  //t.incomingStates("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D", "string");
 }
