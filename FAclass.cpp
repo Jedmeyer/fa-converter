@@ -2,6 +2,7 @@
 #include <string>
 #include <queue>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 class State {
@@ -63,6 +64,30 @@ int arrsize (char * arr) {
   return size;
 }
 
+string * center(int bnum, int spaces, int i, string * display, string** tree) {
+  if (tree[i][bnum] != "_") {
+    int start = bnum * spaces;
+    int loc = floor((spaces-1)/2) + start;
+    display[i][loc] = tree[i][bnum][0];
+  }
+  return display;
+}
+
+/*
+void printTree (vector <Node*> tree, char * input) {
+  //Node * cur;
+  //Node * next;
+  for (int i=0; i<tree.size(); i++) {
+    cout << "input " << input[i] <<":"<< endl;
+    cout << "\tstate: " << tree[i]->curstate->name << endl;
+    cout << "\tbranches:";
+    for (int j=0; tree[i]->branch.size(); j++) {
+      cout << tree[i]->branch[j]->curstate->name << ", ";
+    }
+    cout << endl;
+  }
+}
+*/
 class FA {
   //Primes for id
   int* primes = new int[100] {2, 3, 5, 7, 11, 13, 17, 19,
@@ -198,7 +223,6 @@ class FA {
     cout << endl << endl;
   }
 
-
   public: void translateFA() {
     //////FIX: NEED TO MAKE RULE WITH FOR WHERE EPSILON STUFF GOES
 
@@ -293,10 +317,12 @@ class FA {
 
    /* recursive function that determines determines where the input should go on
   each branch and outputs true if any of the branches end in an accept state */
-  public:bool branch(int& t, int i, char * input, State * cur) {
+  public:bool branch(int& t, int i, char * input, State * cur, string** tree, int bnum) {
 
     string tab = string(i*4,' '); //organizes output based on value of i
     int inputsize = arrsize(input); //size of input
+    //tree[i]->curstate = cur;
+    tree[i][bnum] = cur->name;
 
     if (i<inputsize) {
       int size;  //size of next
@@ -324,8 +350,11 @@ class FA {
 
       i++; //increment i to get next character in input
       //call branch for all possible next states
+      //tree[i]->branch.resize(size);
       for(int j = 0; j<size; j++) {
+        //tree[i]->branch[j]->curstate = cur->next[curinput][j];
         //output location information
+        bnum = bnum*2+j;
         cout << tab << "Current state: " << cur->name << endl;
         cout << tab << "Input: " << input[i-1] << endl;
         cout << tab << "i: " << i-1 << endl;
@@ -336,13 +365,14 @@ class FA {
         if (i == inputsize) {
           //next[j] = next[j]->e_next[0];
           cout << tab << "Branch final state: " << cur->next[curinput][j]->name << endl << endl;
+          tree[i][bnum] = cur->next[curinput][j]->name;
           //increment t if final state is an accept state
           if (cur->next[curinput][j]->accept == true) {
             t++;
           }
         }
         //call branch for the next state
-        branch(t,i,input,cur->next[curinput][j]);
+        branch(t,i,input,cur->next[curinput][j],tree,bnum);
       }
     }
     //return true if any branch ends in an accept state
@@ -356,13 +386,41 @@ class FA {
   public: void simulate(char * input) {
     //call branch function to simulate input moving through states and cout results
     int startstate = 0;
+    int inputsize = arrsize(input);
+    //tree.resize(arrsize(input));
+    string** tree = new string*[inputsize+1];
+    for (int i=0; i<=inputsize; i++) {
+      tree[i] = new string[(int)pow(2,i)];
+      for (int j=0; j<((int)pow(2,i)); j++) {
+        tree[i][j] = "_";
+      }
+    }
+    int bnum = 0;
+
     int t = 0; //tabs
     cout << "INPUT: " << input << endl << endl;
-    if (branch(t,0,input,&initFA[startstate]) == true)
+    if (branch(t,0,input,&initFA[startstate],tree, bnum) == true)
       cout << "Input " << input << " accepted." << endl;
     else
       cout << "Input " << input << " not accepted."<< endl;
     cout << endl << endl;
+
+    cout << "PRINTING TREE" << endl;
+    string* display = new string[inputsize+1];
+    int rowlen = 3*((int)pow(2,inputsize));
+    for (int i=0; i<=inputsize; i++) {
+      display[i] = string(rowlen,' ');
+    }
+    for (int i=0; i<=inputsize; i++) {
+      int spaces = rowlen/((int)pow(2,i));
+      for(int j=0; j<((int)pow(2,i)); j++) {
+        display = center(j,spaces,i,display,tree);
+      }
+    }
+    for (int i=0; i<=inputsize; i++) {
+      cout << input[i-1] << ":" << endl;
+      cout << "\t" << display[i] << endl;
+    }
   }
 };
 
