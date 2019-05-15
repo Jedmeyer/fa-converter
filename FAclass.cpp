@@ -341,10 +341,33 @@ class FA {
       //if no next state for input, terminate branch
       if (size == 0) {
         //output location information
-        cout << tab << "Current state: " << cur->name << endl;
-        cout << tab << "Input: " << input[i] << endl;
-        cout << tab << "i: " << i << endl;
-        cout << tab << "Branch terminated." << endl << endl;
+        //cout << tab << "Current state: " << cur->name << endl;
+        //cout << tab << "Input: " << input[i] << endl;
+        //cout << tab << "i: " << i << endl;
+        //cout << tab << "Branch terminated." << endl << endl;
+        /*
+        if (cur->accept == false) {
+          tree[i+1][bnum*2] = "x";
+          return NULL;
+        }
+        else {
+          if (i == inputsize-1) {
+            //next[j] = next[j]->e_next[0];
+            cout << tab << "Branch final state: " << cur->name << endl << endl;
+            tree[i+1][bnum*2] = cur->name;
+            //increment t if final state is an accept state
+            if (cur->accept == true) {
+              t++;
+            }
+          }
+          //call branch for the next state
+          branch(t,i+1,input,cur,tree,bnum*2);
+          //branch(t,i+1,input,cur,tree,bnum*2);
+          //State * acc = new State;
+          //acc= cur;
+          //cur->next[curinput][0] = acc;
+        }*/
+        tree[i+1][bnum*2] = "x";
         return NULL;
       }
 
@@ -355,11 +378,11 @@ class FA {
         //tree[i]->branch[j]->curstate = cur->next[curinput][j];
         //output location information
         bnum = bnum*2+j;
-        cout << tab << "Current state: " << cur->name << endl;
-        cout << tab << "Input: " << input[i-1] << endl;
-        cout << tab << "i: " << i-1 << endl;
-        cout << tab << "Branch: " << j+1 << " of " << size << endl;
-        cout << tab << "To state: " << cur->next[curinput][j]->name << endl << endl;
+        //cout << tab << "Current state: " << cur->name << endl;
+        //cout << tab << "Input: " << input[i-1] << endl;
+        //cout << tab << "i: " << i-1 << endl;
+        //cout << tab << "Branch: " << j+1 << " of " << size << endl;
+        //cout << tab << "To state: " << cur->next[curinput][j]->name << endl << endl;
 
         //if all characters have been inputed, then next state is final state.
         if (i == inputsize) {
@@ -405,9 +428,9 @@ class FA {
       cout << "Input " << input << " not accepted."<< endl;
     cout << endl << endl;
 
-    cout << "PRINTING TREE" << endl;
+    //Printing Tree
     string* display = new string[inputsize+1];
-    int rowlen = 3*((int)pow(2,inputsize));
+    int rowlen = 2*((int)pow(2,inputsize));
     for (int i=0; i<=inputsize; i++) {
       display[i] = string(rowlen,' ');
     }
@@ -417,8 +440,12 @@ class FA {
         display = center(j,spaces,i,display,tree);
       }
     }
-    for (int i=0; i<=inputsize; i++) {
-      cout << input[i-1] << ":" << endl;
+
+    cout << "Tree for input " << input << endl;
+    cout << "Input";
+    cout << "\t" << display[0] << endl;
+    for (int i=1; i<=inputsize; i++) {
+      cout << input[i-1] << ":";
       cout << "\t" << display[i] << endl;
     }
   }
@@ -431,4 +458,5 @@ int main() {
   f.translateFA();
   f.simulate("010011");
   f.simulate("010101");
+  f.simulate("00000");
 }
