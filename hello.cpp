@@ -25,6 +25,11 @@ public:
 
 void my_hello_world::main(std::string /*url*/)
 {
+    
+    //Here we parse that good ole' query string for preparation
+    //Basically use it to figure out what we execute.
+
+    
     string qstring = request().query_string();
     ifstream webpage;
     string line;
@@ -37,7 +42,7 @@ void my_hello_world::main(std::string /*url*/)
     vector<string> qparsed;
 
     string s;    
-    while(getline(f, s, ','))
+    while(getline(f, s, '&'))
     {
         qparsed.push_back(s);
         response().out() << s;
