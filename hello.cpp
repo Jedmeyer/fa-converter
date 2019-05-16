@@ -9,15 +9,16 @@
 #include <fstream>
 #include<vector>
 #include"helper_functions.hpp"
-
+#include"FAclass.cpp"
 using namespace std;
+
 
 class my_hello_world : public cppcms::application {
 public:
     my_hello_world(cppcms::service &srv) :
-        cppcms::application(srv) 
+        cppcms::application(srv)
     {
-        
+
 
     }
     virtual void main(std::string url);
@@ -25,7 +26,7 @@ public:
 
 void my_hello_world::main(std::string /*url*/)
 {
-    
+
     //Here we parse that good ole' query string for preparation
     //Basically use it to figure out what we execute.
 
@@ -33,13 +34,13 @@ void my_hello_world::main(std::string /*url*/)
     simulate.insert(pair<string,string>("type", "simulate"));
     map<string,string> dfa;
     dfa.insert(pair<string,string>("type", "DFA"));
-    
+
     string qstring = request().query_string();
     ifstream webpage;
     string line;
-    webpage.open("./html-pages/front-page.html");    
+    webpage.open("./html-pages/front-page.html");
     map<string,string> *qmap = parseQstring(qstring);
-    
+
 
     // ------------------LANDING Page-----------------------//
     // ==================================================== //
@@ -50,7 +51,7 @@ void my_hello_world::main(std::string /*url*/)
             while ( getline (webpage,line))
             {
                 response().out() << line << '\n';
-            }   
+            }
             webpage.close();
         }
     }
@@ -61,8 +62,16 @@ void my_hello_world::main(std::string /*url*/)
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
     if(qmap->find("type") == simulate.find("type")){
-        
 
+
+    if(qmap->find("type") == simulate.front()){
+        FA f;
+        f.incomingFA(qmap->find("states"),qmap->find("start"),qmap->find("acc"),qmap->find("alpha"),qmap->find("trans"),qmap->find("input"),qmap->find("type"));
+        //f.translateFA();
+        //f.simulate("010011");
+        //f.simulate("010101");
+        f.simulate();
+      }
 
 
 
@@ -77,13 +86,13 @@ void my_hello_world::main(std::string /*url*/)
     // =====================================================//
     // ----If (type key == DFA) - its the translated page---//
     if(qmap->find("type") == dfa.find("type")){
-        
+
         response().out() << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl
         << "<h2>States: </h2>" << endl
         << " "/* elaina states*/ << endl
         << "<h2>Alphabet: </h2>" << endl
-        << " "/* Jason  Alphabet*/ << endl 
+        << " "/* Jason  Alphabet*/ << endl
         << "<h2>Accept States: </h2>" << endl
         << " "/* Jason Accept State */ << endl
         << "<h2>Transition Functions: </h2>" << endl
