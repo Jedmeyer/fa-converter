@@ -57,7 +57,7 @@ void my_hello_world::main(std::string /*url*/)
 
 
 
-     // ----------------NFA OUTPUT PAGE---------------------//
+    // -----------------NFA OUTPUT PAGE---------------------//
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
     if(qmap->find("type") == simulate.find("type")){
@@ -75,7 +75,7 @@ void my_hello_world::main(std::string /*url*/)
 
     // ----------------DFA OUTPUT PAGE----------------------//
     // =====================================================//
-    // ----If (type key == DFA) - its the output page-------//
+    // ----If (type key == DFA) - its the translated page---//
     if(qmap->find("type") == dfa.find("type")){
         
         response().out() << "<!DOCTYPE html><html>" << endl
