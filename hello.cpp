@@ -8,7 +8,7 @@
 #include<sstream>
 #include <fstream>
 #include<vector>
-
+#include"helper_functions.hpp"
 
 using namespace std;
 
@@ -25,33 +25,52 @@ public:
 
 void my_hello_world::main(std::string /*url*/)
 {
+    
+    //Here we parse that good ole' query string for preparation
+    //Basically use it to figure out what we execute.
+
+    
     string qstring = request().query_string();
     ifstream webpage;
     string line;
     webpage.open("./html-pages/front-page.html");    
+    map<string,string> *qmap = parseQstring(qstring);
     
 
-
-
-    istringstream f(qstring);
-    vector<string> qparsed;
-
-    string s;    
-    while(getline(f, s, ','))
-    {
-        qparsed.push_back(s);
-        response().out() << s;
-    }
-    
-
-    if (webpage.is_open())
-    {
-        while ( getline (webpage,line) )
+    // ------------------LANDING Page-----------------------//
+    // ==================================================== //
+    // If we don't find a 'type' key - its the landing page.//
+    if(qmap->find("type") == qmap->end()){
+        if (webpage.is_open())
         {
-            response().out() << line << '\n';
-        }   
-        webpage.close();
+            while ( getline (webpage,line))
+            {
+                response().out() << line << '\n';
+            }   
+            webpage.close();
+        }
     }
+
+    map<string,string> simulate;
+    simulate.insert("type", "simulate");
+
+     // ----------------NFA OUTPUT PAGE---------------------//
+    // ==================================================== //
+    // ---If (type key == simulate) - its the output page----.//
+    
+    if(qmap->find("type") == simulate.front()){
+        
+
+
+
+
+
+
+
+
+        
+    }
+
 
 }
 
