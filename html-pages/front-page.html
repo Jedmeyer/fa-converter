@@ -28,8 +28,8 @@
 
 							            var state_str = '';
 							            var acc_str = '';
-							            var alpha_str = '';
-
+										var alpha_str = '';
+										var input_str = '';
 
 
 							            var bigstr = '';
@@ -71,10 +71,11 @@
 							            console.log(state_str);
 							            console.log(acc_str);
 							            console.log(alpha_str);
-							            console.log(bigstr);
+										console.log(bigstr);
+										console.log(input_str);
 							           
 
-							            var newUrl = curUrl + "Build" + "?states=" + state_str + "&acc=" + acc_str + "&alpha=" + alpha_str + "&input=" + bigstr + "&type=NFA"
+							            var newUrl = curUrl + "Build" + "?states=" + state_str + "&acc=" + acc_str + "&alpha=" + alpha_str + "&trans=" + bigstr + "&type=DFA"
 							            window.location = newUrl
 
 							        }
