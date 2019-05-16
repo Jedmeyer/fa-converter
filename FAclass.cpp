@@ -95,6 +95,38 @@ class FA {
   vector<char> alphaorder;
   vector<State> transFA;
   char * input;
+  int startstate;
+
+  public: printDFA(string alpha) {
+    //States
+    cout << "States: {";
+    for (int i=0; i<transFA.size(); i++) {
+      cout << transFA.name << ","
+    }
+    cout << "}" << endl;
+
+    //Start State
+    cout << "Start State: " transFA[0].name << endl;
+
+    //Accept states
+    cout << "Accept States: {"};
+    for (int i=0; i<numStates; i++) {
+      if (initFA[i].accept == true) {
+        for (int j=0; j<transFA.size(); j++) {
+          if (transFA[j].id % initFA[i].id) {
+            cout << transFA[j].name << ",";
+          }
+        }
+      }
+      cout << "}" << endl;
+    }
+
+    //alphabet
+    cout << "Alphabet: {" << alpha << "}" << endl;
+    
+    //Transition Functions
+
+  }
 
   public: bool inStateList(vector<State> Func, State cur) {
     //FIX: check if cur is in transFA[i] (binary search)
@@ -108,9 +140,9 @@ class FA {
     return false;
   }
 
-   public: void incomingFA(string states, string acc, string alpha, string trans, string in, string type) {
-     input = new char[in.length() + 1];
-     strcpy(input,in.c_str());
+   public: void incomingFA(string states, string start, string acc, string alpha, string trans, string instring, string type) {
+     input = new char[instring.length() + 1];
+     strcpy(input,instring.c_str());
 
     //States
     initFA.resize(0);
@@ -125,7 +157,7 @@ class FA {
         }
     }
 
-    //acc
+    //start and acc
     for (int i = 0; i < acc.length(); i++)
     {
         if (acc[i] != ',' & acc[i] != ' ')
@@ -135,7 +167,9 @@ class FA {
                 if (initFA[j].name == string(1,acc[i]))
                 {
                     initFA[j].accept = true;
-                    break;
+                }
+                if (initFA[j].name == start) {
+                  startstate = j;
                 }
             }
         }
@@ -250,33 +284,23 @@ class FA {
                         namechar = &initFA[j];
                     }
                 }
-
-                //cout << "\tCurrent char state: " << namechar->name << endl;
-
                 //for all input possiblities
                 for (int j=0; j<numAlpha; j++)
                 {
-
                   if (i == 0) {
                     State * curnext = new State;
                     cur.next[j].resize(1);
                     cur.next[j][0] = curnext;
                   }
-
-                    //cout << "\t\tCurrent input: " << j << endl;
-
                     //for all States that current character State goes to on current input
                     for (int k = 0; k < namechar->next[j].size(); k++)
                     {
                         if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
                         {
-                            //cout << "\t\t\tadding to nextstate ";
                             cur.next[j][0]->id *= namechar->next[j][k]->id;
                             cur.next[j][0]->name += namechar->next[j][k]->name;
-                            //cout << "name: " << cur.next[j][0]->name << " id " << cur.next[j][0]->id << endl;
                         }
                     }
-                    //cout << "\tFinal next state" << "name: " << cur.next[j][0]->name << " id " << cur.next[j][0]->id << endl;
                 }
             }
 
@@ -289,11 +313,7 @@ class FA {
                 bool vis = inStateList(transFA,*cur.next[j][0]);
 
                 //not visited => not in transFA
-                if (!vis)
-                {
-                    //cout << "Adding " << cur.next[j][0]->name << " to pq" << endl;
-                    pq.push(*cur.next[j][0]);
-                }
+                if (!vis) {pq.push(*cur.next[j][0]);}
             }
         }
     }
@@ -329,54 +349,19 @@ class FA {
 
       //if no next state for input, terminate branch
       if (size == 0) {
-        //output location information
-        //cout << tab << "Current state: " << cur->name << endl;
-        //cout << tab << "Input: " << input[i] << endl;
-        //cout << tab << "i: " << i << endl;
-        //cout << tab << "Branch terminated." << endl << endl;
-        /*
-        if (cur->accept == false) {
-          tree[i+1][bnum*2] = "x";
-          return NULL;
-        }
-        else {
-          if (i == inputsize-1) {
-            //next[j] = next[j]->e_next[0];
-            cout << tab << "Branch final state: " << cur->name << endl << endl;
-            tree[i+1][bnum*2] = cur->name;
-            //increment t if final state is an accept state
-            if (cur->accept == true) {
-              t++;
-            }
-          }
-          //call branch for the next state
-          branch(t,i+1,input,cur,tree,bnum*2);
-          //branch(t,i+1,input,cur,tree,bnum*2);
-          //State * acc = new State;
-          //acc= cur;
-          //cur->next[curinput][0] = acc;
-        }*/
         tree[i+1][bnum*2] = "x";
         return NULL;
       }
 
       i++; //increment i to get next character in input
       //call branch for all possible next states
-      //tree[i]->branch.resize(size);
       for(int j = 0; j<size; j++) {
-        //tree[i]->branch[j]->curstate = cur->next[curinput][j];
-        //output location information
         bnum = bnum*2+j;
-        //cout << tab << "Current state: " << cur->name << endl;
-        //cout << tab << "Input: " << input[i-1] << endl;
-        //cout << tab << "i: " << i-1 << endl;
-        //cout << tab << "Branch: " << j+1 << " of " << size << endl;
-        //cout << tab << "To state: " << cur->next[curinput][j]->name << endl << endl;
 
         //if all characters have been inputed, then next state is final state.
         if (i == inputsize) {
           //next[j] = next[j]->e_next[0];
-          cout << tab << "Branch final state: " << cur->next[curinput][j]->name << endl << endl;
+          //cout << tab << "Branch final state: " << cur->next[curinput][j]->name << endl << endl;
           tree[i][bnum] = cur->next[curinput][j]->name;
           //increment t if final state is an accept state
           if (cur->next[curinput][j]->accept == true) {
@@ -397,9 +382,8 @@ class FA {
 
   public: void simulate() {
     //call branch function to simulate input moving through states and cout results
-    int startstate = 0;
     int inputsize = arrsize(input);
-    //tree.resize(arrsize(input));
+
     string** tree = new string*[inputsize+1];
     for (int i=0; i<=inputsize; i++) {
       tree[i] = new string[(int)pow(2,i)];
@@ -439,13 +423,3 @@ class FA {
     }
   }
 };
-
-
-int main() {
-  FA f;
-  f.incomingFA("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "010011","string");
-  f.translateFA();
-  //f.simulate("010011");
-  //f.simulate("010101");
-  f.simulate();
-}
