@@ -73,21 +73,6 @@ string * center(int bnum, int spaces, int i, string * display, string** tree) {
   return display;
 }
 
-/*
-void printTree (vector <Node*> tree, char * input) {
-  //Node * cur;
-  //Node * next;
-  for (int i=0; i<tree.size(); i++) {
-    cout << "input " << input[i] <<":"<< endl;
-    cout << "\tstate: " << tree[i]->curstate->name << endl;
-    cout << "\tbranches:";
-    for (int j=0; tree[i]->branch.size(); j++) {
-      cout << tree[i]->branch[j]->curstate->name << ", ";
-    }
-    cout << endl;
-  }
-}
-*/
 class FA {
   //Primes for id
   int* primes = new int[100] {2, 3, 5, 7, 11, 13, 17, 19,
@@ -109,6 +94,7 @@ class FA {
   int numAlpha = 0;
   vector<char> alphaorder;
   vector<State> transFA;
+  char * input;
 
   public: bool inStateList(vector<State> Func, State cur) {
     //FIX: check if cur is in transFA[i] (binary search)
@@ -122,7 +108,10 @@ class FA {
     return false;
   }
 
-   public: void incomingFA(string states, string acc, string alpha, string input, string type) {
+   public: void incomingFA(string states, string acc, string alpha, string trans, string in, string type) {
+     input = new char[in.length() + 1];
+     strcpy(input,in.c_str());
+
     //States
     initFA.resize(0);
     for (int i = 0; i<states.length(); i++)
@@ -172,12 +161,12 @@ class FA {
     //input
     int curState = -1;
     int curinput = -1;
-    for (int i=0; i<input.length(); i++)
+    for (int i=0; i<trans.length(); i++)
     {
         //find origin state
         for (int j = 0; j < numStates; j++)
         {
-            if (initFA[j].name == string(1,input[i]))
+            if (initFA[j].name == string(1,trans[i]))
             {
                 curState = j;
                 break;
@@ -188,7 +177,7 @@ class FA {
         //find input value
         for (int j = 0; j < numAlpha; j++)
         {
-            if (input[i] == alphaorder[j])
+            if (trans[i] == alphaorder[j])
             {
                 curinput = j;
                 break;
@@ -197,14 +186,14 @@ class FA {
         i+=2; //move to nextstates
 
         //find next states
-        while(input[i] != ';' & i<input.length())
+        while(trans[i] != ';' & i<trans.length())
         {
-            if (input[i] != ',' & input[i] !=' ')
+            if (trans[i] != ',' & trans[i] !=' ')
             {
                 //find State that matches input[k]
                 for (int j = 0; j < numStates; j++)
                 {
-                    if (initFA[j].name == string(1,input[i]))
+                    if (initFA[j].name == string(1,trans[i]))
                     {
                         //add to initFA next
                         initFA[curState].next[curinput].push_back(&initFA[j]);
@@ -406,7 +395,7 @@ class FA {
   }
 
 
-  public: void simulate(char * input) {
+  public: void simulate() {
     //call branch function to simulate input moving through states and cout results
     int startstate = 0;
     int inputsize = arrsize(input);
@@ -445,7 +434,7 @@ class FA {
     cout << "Input";
     cout << "\t" << display[0] << endl;
     for (int i=1; i<=inputsize; i++) {
-      cout << input[i-1] << ":";
+      cout << input[i-1] << ":" << endl;
       cout << "\t" << display[i] << endl;
     }
   }
@@ -454,9 +443,9 @@ class FA {
 
 int main() {
   FA f;
-  f.incomingFA("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "string");
+  f.incomingFA("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "010011","string");
   f.translateFA();
-  f.simulate("010011");
-  f.simulate("010101");
-  f.simulate("00000");
+  //f.simulate("010011");
+  //f.simulate("010101");
+  f.simulate();
 }
