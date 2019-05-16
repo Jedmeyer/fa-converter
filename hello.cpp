@@ -34,26 +34,43 @@ void my_hello_world::main(std::string /*url*/)
     ifstream webpage;
     string line;
     webpage.open("./html-pages/front-page.html");    
-    
-
-
-
-    istringstream f(qstring);
-    vector<string> qparsed;
     map<string,string> *qmap = parseQstring(qstring);
     
 
-    if (webpage.is_open())
-    {
-        while ( getline (webpage,line) )
+    // ------------------LANDING Page-----------------------//
+    // ==================================================== //
+    // If we don't find a 'type' key - its the landing page.//
+    if(qmap->find("type") == qmap->end()){
+        if (webpage.is_open())
         {
-            response().out() << line << '\n';
-        }   
-        webpage.close();
-        
-    if(qmap->find("type") == qmap->end())
-        response().out() << "<p> Didn't find a type Query Variable</p>";
+            while ( getline (webpage,line))
+            {
+                response().out() << line << '\n';
+            }   
+            webpage.close();
+        }
     }
+
+    map<string,string> simulate;
+    simulate.insert("type", "simulate");
+
+     // ----------------NFA OUTPUT PAGE---------------------//
+    // ==================================================== //
+    // ---If (type key == simulate) - its the output page----.//
+    
+    if(qmap->find("type") == simulate.front()){
+        
+
+
+
+
+
+
+
+
+        
+    }
+
 
 }
 
