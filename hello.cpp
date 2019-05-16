@@ -8,7 +8,7 @@
 #include<sstream>
 #include <fstream>
 #include<vector>
-
+#include"helper_functions.hpp"
 
 using namespace std;
 
@@ -40,13 +40,7 @@ void my_hello_world::main(std::string /*url*/)
 
     istringstream f(qstring);
     vector<string> qparsed;
-
-    string s;    
-    while(getline(f, s, '&'))
-    {
-        qparsed.push_back(s);
-        response().out() << s;
-    }
+    map<string,string> *qmap = parseQstring(qstring);
     
 
     if (webpage.is_open())
@@ -56,6 +50,9 @@ void my_hello_world::main(std::string /*url*/)
             response().out() << line << '\n';
         }   
         webpage.close();
+        
+    if(qmap->find("type") == qmap->end())
+        response().out() << "<p> Didn't find a type Query Variable</p>";
     }
 
 }

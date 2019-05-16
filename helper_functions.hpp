@@ -3,11 +3,11 @@
 #include<vector>
 using namespace std;
 
-map<string, string> parseQstring(string qstring){
+map<string, string> *parseQstring(string qstring){
     istringstream *f = new istringstream(qstring);
     vector<string> qparsed;
 
-    map<string,string> qmap;
+    map<string,string> *qmap = new map<string,string>;
 
     // Parse Everything into a vector
     string all;  
@@ -25,8 +25,11 @@ map<string, string> parseQstring(string qstring){
         f = new istringstream(qparsed[i]);
         getline(*f, title, '='); //Get the key value
         getline(*f, content);    //Get the value... value?
-        qmap.insert(pair<string,string>(title,content));
+        qmap->insert(pair<string,string>(title,content));
     }
+
+    //Inserted to make it easier to be able to find the end
+    qmap->insert(pair<string,string>("zdummy", "zdummy"));
     delete f;
     return qmap;
 }
