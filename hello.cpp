@@ -30,9 +30,9 @@ void my_hello_world::main(std::string /*url*/)
     //Basically use it to figure out what we execute.
 
     map<string,string> simulate;
-    simulate.insert("type", "simulate");
+    simulate.insert(pair<string,string>("type", "simulate"));
     map<string,string> dfa;
-    dfa.insert("type", "DFA");
+    dfa.insert(pair<string,string>("type", "DFA"));
     
     string qstring = request().query_string();
     ifstream webpage;
@@ -60,7 +60,7 @@ void my_hello_world::main(std::string /*url*/)
      // ----------------NFA OUTPUT PAGE---------------------//
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
-    if(qmap->find("type") == simulate.front()){
+    if(qmap->find("type") == simulate.find("type")){
         
 
 
@@ -76,18 +76,18 @@ void my_hello_world::main(std::string /*url*/)
     // ----------------DFA OUTPUT PAGE----------------------//
     // =====================================================//
     // ----If (type key == DFA) - its the output page-------//
-    if(qmap->find("type") == dfa.front()){
+    if(qmap->find("type") == dfa.find("type")){
         
         response().out() << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl
         << "<h2>States: </h2>" << endl
-        << /* elaina states*/ << endl
+        << " "/* elaina states*/ << endl
         << "<h2>Alphabet: </h2>" << endl
-        << /* Jason  Alphabet*/ << endl 
+        << " "/* Jason  Alphabet*/ << endl 
         << "<h2>Accept States: </h2>" << endl
-        << /* Jason Accept State */ << endl
+        << " "/* Jason Accept State */ << endl
         << "<h2>Transition Functions: </h2>" << endl
-        << /* Elaina  Trans function*/ << endl
+        << " " /* Elaina  Trans function*/ << endl
         << "</body></html>";
     }
 
