@@ -10,7 +10,7 @@ public:
   string name;
   int id;
   //FIX:
-  vector<vector<State*>> next;
+  vector <vector<State*> > next;
   bool accept = false;
 
   State(string n) { name = n; }
