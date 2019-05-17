@@ -29,12 +29,6 @@ void my_hello_world::main(std::string /*url*/)
 
     //Here we parse that good ole' query string for preparation
     //Basically use it to figure out what we execute.
-
-    map<string,string> simulate;
-    simulate.insert(pair<string,string>("type", "simulate"));
-    map<string,string> dfa;
-    dfa.insert(pair<string,string>("type", "DFA"));
-
     string qstring = request().query_string();
     ifstream webpage;
     string line;
@@ -62,7 +56,7 @@ void my_hello_world::main(std::string /*url*/)
     // -----------------NFA OUTPUT PAGE---------------------//
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
-    if(qmap->find("type")->second == simulate.find("type")->second){
+    if(qmap->find("type")->second == simulate){
 
 
     if(qmap->find("type") == simulate.begin()){
@@ -86,8 +80,7 @@ void my_hello_world::main(std::string /*url*/)
     // ----------------DFA OUTPUT PAGE----------------------//
     // =====================================================//
     // ----If (type value == DFA) - its the translated page---//
-    cout << "Is DFA?: " << qmap->find("type")->second  << " vs " << "DFA"<< endl; 
-    if(qmap->find("type")->second == dfa.find("type")->second){
+    if(qmap->find("type")->second == "DFA"){
 
         response().out() << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl
