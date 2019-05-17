@@ -302,6 +302,19 @@ class FA {
                             cur.next[j][0]->name = sortString(cur.next[j][0]->name);
                         }
                     }
+
+                    //Add Epsilon STUFF
+
+                    //Add nullstate stuff
+                    for (int k = 0; k < namechar->next[j].size(); k++)
+                    {
+                        if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
+                        {
+                            cur.next[j][0]->id *= namechar->next[j][k]->id;
+                            cur.next[j][0]->name += namechar->next[j][k]->name;
+                            cur.next[j][0]->name = sortString(cur.next[j][0]->name);
+                        }
+                    }
                 }
             }
 
@@ -423,3 +436,11 @@ class FA {
     }
   }
 };
+
+int main() {
+    f.incomingFA("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "010011","string");
+    f.translateFA();
+    //f.simulate("010011");
+    //f.simulate("010101");
+    f.simulate();
+}
