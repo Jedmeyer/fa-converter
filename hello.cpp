@@ -3,9 +3,9 @@
 #include <cppcms/service.h>
 #include <cppcms/http_response.h>
 #include <cppcms/http_request.h>
-#include<map>
+#include <map>
 #include <iostream>
-#include<sstream>
+#include <sstream>
 #include <fstream>
 #include<vector>
 #include"helper_functions.hpp"
@@ -62,6 +62,7 @@ void my_hello_world::main(std::string /*url*/)
         //f.simulate("010011");
         //f.simulate("010101");
         f.simulate();
+        response().out() << "I swear we simulated it!" << endl;
       }
 
 
@@ -72,17 +73,33 @@ void my_hello_world::main(std::string /*url*/)
     // ----If (type value == DFA) - its the translated page---//
     if(qmap->find("type")->second == "DFA"){
 
-        response().out() << "<!DOCTYPE html><html>" << endl
+
+        FA f;
+        f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
+        f.translateFA();
+        ostream out;
+
+        printDFA(&out);
+
+        response().out()<< 
+        << "<!DOCTYPE html><html>" << endl
+        << "<body> <h1>DFA Created: </h1>" << endl 
+        << "<p>" << out << "</p>";
+        
+        
+        
+        /*
+        << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl
         << "<h2>States: </h2>" << endl
-        << " "/* elaina states*/ << endl
+        << " "/* elaina states*//* << endl
         << "<h2>Alphabet: </h2>" << endl
         << qmap->find("alpha")->second << endl
         << "<h2>Accept States: </h2>" << endl
         << qmap->find("acc")->second << endl
         << "<h2>Transition Functions: </h2>" << endl
-        << " " /* Elaina  Trans function*/ << endl
-        << "</body></html>";
+        << " " /* Elaina  Trans function*//* << endl
+        << "</body></html>";*/
     }
 
 

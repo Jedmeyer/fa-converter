@@ -100,42 +100,44 @@ class FA {
   char * input;
   int startstate;
 
-  public: void printDFA() {
+  public: 
+  
+  void printDFA(ostream &o) {
     //States
-    cout << "States: {";
+    o << "States: {";
     for (int i=0; i<transFA.size(); i++) {
-      cout << transFA[i].name << ",";
+      o << transFA[i].name << ",";
     }
-    cout << "}" << endl;
+    o << "}" << endl;
 
     //Start State
-    cout << "Start State: " << transFA[0].name << endl;
+    o << "Start State: " << transFA[0].name << endl;
 
     //Accept states
-    cout << "Accept States: {";
+    o << "Accept States: {";
     for (int i=0; i<numStates; i++) {
       if (initFA[i].accept == true) {
         for (int j=0; j<transFA.size(); j++) {
           if (transFA[j].id % initFA[i].id == 0) {
-            cout << transFA[j].name << ",";
+            o << transFA[j].name << ",";
           }
         }
       }
     }
-    cout << "}" << endl;
+    o << "}" << endl;
 
     //alphabet
-    cout << "Alphabet: {";
+    o << "Alphabet: {";
     for (int i=0; i<numAlphaDFA; i++) {
-      cout << alphaorder[i] << ",";
+      o << alphaorder[i] << ",";
     }
-    cout << "}" << endl;
+    o << "}" << endl;
 
     //Transition Functions
-    cout << "Transition Functions:" << endl;
+    o << "Transition Functions:" << endl;
     for (int i=0; i<transFA.size(); i++) {
       for (int j=0; j<numAlphaDFA; j++) {
-        cout << "𝛿(" << transFA[i].name << "," << alphaorder[j] << ") = " << transFA[i].next[j][0]->name << endl;
+        o << "𝛿(" << transFA[i].name << "," << alphaorder[j] << ") = " << transFA[i].next[j][0]->name << endl;
       }
     }
   }
