@@ -3,7 +3,11 @@
 #include <queue>
 #include <vector>
 #include <cmath>
+
+
 using namespace std;
+
+
 
 class State {
 public:
@@ -97,19 +101,20 @@ class FA {
   char * input;
   int startstate;
 
-  public: printDFA(string alpha) {
+  public: 
+  void printDFA(string alpha) {
     //States
     std::cout << "States: {";
     for (int i=0; i<transFA.size(); i++) {
-      std::cout << transFA.name << ","
+      std::cout << transFA[i].name << ",";
     }
     std::cout << "}" << endl;
 
     //Start State
-    std::cout << "Start State: " transFA[0].name << endl;
+    std::cout << "Start State: " << transFA[0].name << endl;
 
     //Accept states
-    std::cout << "Accept States: {"};
+    std::cout << "Accept States: {";
     for (int i=0; i<numStates; i++) {
       if (initFA[i].accept == true) {
         for (int j=0; j<transFA.size(); j++) {

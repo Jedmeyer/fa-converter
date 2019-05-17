@@ -64,9 +64,9 @@ void my_hello_world::main(std::string /*url*/)
     if(qmap->find("type") == simulate.find("type")){
 
 
-    if(qmap->find("type") == simulate.front()){
+    if(qmap->find("type") == simulate.begin()){
         FA f;
-        f.incomingFA(qmap->find("states"),qmap->find("start"),qmap->find("acc"),qmap->find("alpha"),qmap->find("trans"),qmap->find("input"),qmap->find("type"));
+        f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
