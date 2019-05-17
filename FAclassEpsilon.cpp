@@ -532,6 +532,7 @@ class FA {
   }
 };
 
+/*
 int main() {
     FA f;
     //f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
@@ -543,3 +544,4 @@ int main() {
     f.simulate();
     f.printDFA();
 }
+*/
