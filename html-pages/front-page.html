@@ -27,7 +27,8 @@
 							            var inputs = Array.from(inputs);
 
 							            var state_str = '';
-							            var acc_str = '';
+										var acc_str = '';
+										var start_state = '';
 										var alpha_str = '';
 										var input_str = '';
 
@@ -44,12 +45,16 @@
 												                        state_str = element.value;
 												                    }
 									                    else if (inc == 1) {
-												                        acc_str = element.value;
-												                    }
-									                    else if (inc == 2) {
+																		start_state = element.value;
+																	}
+														else if (inc == 2){
+																		acc_str = element.value;
+
+																	}
+									                    else if (inc == 3) {
 												                        alpha_str = element.value;
 												                    }
-									                    else if (inc > 2){
+									                    else if (inc > 3){
 																		
 												                        var str = element.value;
 												                        str.trim();
@@ -75,8 +80,8 @@
 										console.log(input_str);
 							           
 
-							            var newUrl = curUrl + "Build" + "?states=" + state_str + "&acc=" + acc_str + "&alpha=" + alpha_str + "&trans=" + bigstr + "&type=DFA"
-							            window.location = newUrl
+							            var newUrl = curUrl + "Build" + "?states=" + state_str + "&start=" +start_state + "&acc=" + acc_str + "&alpha=" + alpha_str + "&trans=" + bigstr + "&type=DFA";
+							            window.location = newUrl;
 
 							        }
     </script>
@@ -87,6 +92,9 @@
 			    </div>
 			        <br />
 
+					<div>
+						Start_State = {<input type="text" name="start_state" value="" maxlength="1">}
+					</div>
 				    <div>
 					            Acc_States = {<input type="text" name="acc_states" value="" maxlength="99">}
 						        </div>

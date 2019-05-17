@@ -57,16 +57,17 @@ void my_hello_world::main(std::string /*url*/)
     }
 
 
+    cout << "Is NFA?: " << qmap->find("type")->second  << " vs " << "simulate"<< endl; 
 
-     // ----------------NFA OUTPUT PAGE---------------------//
+    // -----------------NFA OUTPUT PAGE---------------------//
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
-    if(qmap->find("type") == simulate.find("type")){
+    if(qmap->find("type")->second == simulate.find("type")->second){
 
 
-    if(qmap->find("type") == simulate.front()){
+    if(qmap->find("type") == simulate.begin()){
         FA f;
-        f.incomingFA(qmap->find("states"),qmap->find("start"),qmap->find("acc"),qmap->find("alpha"),qmap->find("trans"),qmap->find("input"),qmap->find("type"));
+        f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
@@ -84,8 +85,9 @@ void my_hello_world::main(std::string /*url*/)
 
     // ----------------DFA OUTPUT PAGE----------------------//
     // =====================================================//
-    // ----If (type key == DFA) - its the output page-------//
-    if(qmap->find("type") == dfa.find("type")){
+    // ----If (type value == DFA) - its the translated page---//
+    cout << "Is DFA?: " << qmap->find("type")->second  << " vs " << "DFA"<< endl; 
+    if(qmap->find("type")->second == dfa.find("type")->second){
 
         response().out() << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl
