@@ -101,7 +101,8 @@ class FA {
 
   public: 
   
-  void printDFA(ostream &o) {
+  void printDFA(stringstream &o) {
+    
     //States
     o << "States: {";
     for (int i=0; i<transFA.size(); i++) {
