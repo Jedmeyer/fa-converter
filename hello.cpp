@@ -62,6 +62,7 @@ void my_hello_world::main(std::string /*url*/)
         //f.simulate("010011");
         //f.simulate("010101");
         f.simulate();
+        response().out() << "I swear we simulated it!" << endl;
       }
 
 
@@ -78,19 +79,27 @@ void my_hello_world::main(std::string /*url*/)
         f.translateFA();
         ostream out;
 
-        printDFA()
+        printDFA(&out);
 
-        response().out() << "<!DOCTYPE html><html>" << endl
+        response().out()<< 
+        << "<!DOCTYPE html><html>" << endl
+        << "<body> <h1>DFA Created: </h1>" << endl 
+        << "<p>" << out << "</p>";
+        
+        
+        
+        /*
+        << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl
         << "<h2>States: </h2>" << endl
-        << " "/* elaina states*/ << endl
+        << " "/* elaina states*//* << endl
         << "<h2>Alphabet: </h2>" << endl
         << qmap->find("alpha")->second << endl
         << "<h2>Accept States: </h2>" << endl
         << qmap->find("acc")->second << endl
         << "<h2>Transition Functions: </h2>" << endl
-        << " " /* Elaina  Trans function*/ << endl
-        << "</body></html>";
+        << " " /* Elaina  Trans function*//* << endl
+        << "</body></html>";*/
     }
 
 
