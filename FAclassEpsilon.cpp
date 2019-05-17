@@ -90,42 +90,53 @@ class FA {
   479, 487, 491, 499, 503, 509, 521, 523, 541};
   int primetracker = 0;
   int numStates = 0;
+  int epsilon = -1;
   vector<State>initFA;
   int numAlpha = 0;
+  int numAlphaDFA = 0;
   vector<char> alphaorder;
   vector<State> transFA;
   char * input;
   int startstate;
 
-  public: void printDFA(string alpha) {
+  public: void printDFA() {
     //States
     cout << "States: {";
     for (int i=0; i<transFA.size(); i++) {
-      cout << transFA.name << ","
+      cout << transFA[i].name << ",";
     }
     cout << "}" << endl;
 
     //Start State
-    cout << "Start State: " transFA[0].name << endl;
+    cout << "Start State: " << transFA[0].name << endl;
 
     //Accept states
-    cout << "Accept States: {"};
+    cout << "Accept States: {";
     for (int i=0; i<numStates; i++) {
       if (initFA[i].accept == true) {
         for (int j=0; j<transFA.size(); j++) {
-          if (transFA[j].id % initFA[i].id) {
+          if (transFA[j].id % initFA[i].id == 0) {
             cout << transFA[j].name << ",";
           }
         }
       }
-      cout << "}" << endl;
     }
+    cout << "}" << endl;
 
     //alphabet
-    cout << "Alphabet: {" << alpha << "}" << endl;
+    cout << "Alphabet: {";
+    for (int i=0; i<numAlphaDFA; i++) {
+      cout << alphaorder[i] << ",";
+    }
+    cout << "}" << endl;
 
     //Transition Functions
-
+    cout << "Transition Functions:" << endl;
+    for (int i=0; i<transFA.size(); i++) {
+      for (int j=0; j<numAlphaDFA; j++) {
+        cout << "𝛿(" << transFA[i].name << "," << alphaorder[j] << ") = " << transFA[i].next[j][0]->name << endl;
+      }
+    }
   }
 
   public: bool inStateList(vector<State> Func, State cur) {
@@ -182,9 +193,22 @@ class FA {
         if (alpha[i]!=',' & alpha[i]!=' ')
         {
             alphaorder.push_back(alpha[i]);
+            if (alpha[i] == 'E') {
+              epsilon = numAlpha;
+            }
             numAlpha++;
         }
     }
+
+    //Puts epsilon in back of alphaorder if it exists
+    if (epsilon != -1) {
+      char temp = alphaorder[epsilon];
+      alphaorder[epsilon] = alphaorder[numAlpha-1];
+      alphaorder[numAlpha-1] = temp;
+      epsilon = numAlpha-1;
+    }
+    numAlphaDFA = numAlpha; //CHANGE LATER IN CODE WHEN GET RID OF EPSILON
+
 
     for (int i = 0; i < numStates; i++)
     {
@@ -252,8 +276,21 @@ class FA {
     priority_queue<State> pq;
     transFA.resize(0);
 
+    State cur = initFA[startstate];
+
+    if (epsilon != -1) {
+        cout << cur.next[epsilon].size() << endl;
+        for (int i=0; i<(cur.next[epsilon].size()); i++) {
+          if (cur.id % cur.next[epsilon][i]->id != 0) {
+            cur.id *= cur.next[epsilon][i]->id;
+            cur.name += cur.next[epsilon][i]->name;
+            cur.name = sortString(cur.name);
+          }
+        }
+    }
+
     //Add start State to pq
-    pq.push(initFA[0]);
+    pq.push(cur);
 
     //while pq is not empty
     while (!pq.empty())
@@ -267,8 +304,7 @@ class FA {
         cur.next.resize(numAlpha);
 
         //cout << "Current state " << cur.name << ", visit " << visit << endl;
-
-        if (!visit & cur.name!="")
+        if (!visit & cur.name!="" & cur.name!="Ø")
         {
             //for all characters in current State's name
             for (int i=0; i<cur.name.length(); i++)
@@ -292,44 +328,91 @@ class FA {
                     cur.next[j].resize(1);
                     cur.next[j][0] = curnext;
                   }
-                    //for all States that current character State goes to on current input
-                    for (int k = 0; k < namechar->next[j].size(); k++)
-                    {
-                        if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
-                        {
-                            cur.next[j][0]->id *= namechar->next[j][k]->id;
-                            cur.next[j][0]->name += namechar->next[j][k]->name;
-                            cur.next[j][0]->name = sortString(cur.next[j][0]->name);
-                        }
-                    }
 
-                    //Add Epsilon STUFF
+                  //for all States that current character State goes to on current input
+                  for (int k = 0; k < namechar->next[j].size(); k++)
+                  {
+                      if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
+                      {
+                          cur.next[j][0]->id *= namechar->next[j][k]->id;
+                          cur.next[j][0]->name += namechar->next[j][k]->name;
+                          cur.next[j][0]->name = sortString(cur.next[j][0]->name);
+                          /*if (namechar->next[j][k]->accept == true) {
+                            cur.next[j][0]->accept = true;
+                          }*/
+                      }
+                  }
+               }
+             }
 
-                    //Add nullstate stuff
-                    for (int k = 0; k < namechar->next[j].size(); k++)
-                    {
-                        if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
-                        {
-                            cur.next[j][0]->id *= namechar->next[j][k]->id;
-                            cur.next[j][0]->name += namechar->next[j][k]->name;
-                            cur.next[j][0]->name = sortString(cur.next[j][0]->name);
-                        }
-                    }
-                }
-            }
+          //cout << "Starting Epsilon stuff" << endl;
+          //EPSILON stuff
+          //for all characters in next on epsilon
+          if (epsilon != -1) {
+             for (int i=0; i<cur.next[epsilon][0]->name.length(); i++)
+             {
+                  State* namechar = NULL;
 
-            //add cur to transFA
-            transFA.push_back(cur);
+                  //find State that matches input[k]
+                 for (int j = 0; j < numStates; j++)
+                 {
+                     if (initFA[j].name == string(1,cur.next[epsilon][0]->name[i]))
+                     {
+                         //add to initFA next
+                         namechar = &initFA[j];
+                     }
+                 }
 
-            //add cur's next States to pq if not in transFA
-            for (int j = 0; j < numAlpha; j++)
-            {
-                bool vis = inStateList(transFA,*cur.next[j][0]);
+                 //for all input possiblities
+                 for (int j=0; j<numAlpha; j++)
+                 {
+                     //for all States that current character State goes to on current input
+                     for (int k = 0; k < namechar->next[j].size(); k++)
+                     {
+                       if (namechar->next[j][k]->id != 1) {
+                           if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
+                           {
+                               cur.next[j][0]->id *= namechar->next[j][k]->id;
+                               cur.next[j][0]->name += namechar->next[j][k]->name;
+                           }
+                           if (cur.next[j][0]->id % namechar->id != 0) {
+                             cur.next[j][0]->id *= namechar->id;
+                             cur.next[j][0]->name += namechar->name;
+                           }
+                           cur.next[j][0]->name = sortString(cur.next[j][0]->name);
+                       }
+                     }
+                  }
+              }
+            //Delete epsilon
+            cur.next.pop_back();
+            numAlphaDFA = numAlpha - 1;
+          }
 
-                //not visited => not in transFA
-                if (!vis) {pq.push(*cur.next[j][0]);}
-            }
-        }
+          //add cur to transFA
+          transFA.push_back(cur);
+
+          //add cur's next States to pq if not in transFA
+          for (int j = 0; j < numAlphaDFA; j++)
+          {
+              if (cur.next[j][0]->id == 1)
+              {
+                  cur.next[j][0]->name = "Ø";
+                  cur.next[j][0]->id = primes[primetracker];
+                  cur.next[j][0]->next.resize(numAlpha);
+                  for (int i=0; i<numAlphaDFA; i++) {
+                      State * curstate = new State("Ø",primes[primetracker]);
+                      cur.next[j][0]->next[i].resize(1);
+                      cur.next[j][0]->next[i][0] = curstate;
+                  }
+                  transFA.push_back(*cur.next[j][0]);
+              }
+              bool vis = inStateList(transFA,*cur.next[j][0]);
+
+              //not visited => not in transFA
+              if (!vis) {pq.push(*cur.next[j][0]);}
+          }
+       }
     }
 
     cout << "transFA data: " << endl;
@@ -370,22 +453,32 @@ class FA {
       i++; //increment i to get next character in input
       //call branch for all possible next states
       for(int j = 0; j<size; j++) {
-        bnum = bnum*2+j;
+        //bnum = bnum*2+j;
 
         //if all characters have been inputed, then next state is final state.
         if (i == inputsize) {
           //next[j] = next[j]->e_next[0];
           //cout << tab << "Branch final state: " << cur->next[curinput][j]->name << endl << endl;
-          tree[i][bnum] = cur->next[curinput][j]->name;
+          tree[i][bnum*2+j] = cur->next[curinput][j]->name;
           //increment t if final state is an accept state
           if (cur->next[curinput][j]->accept == true) {
             t++;
           }
         }
         //call branch for the next state
-        branch(t,i,input,cur->next[curinput][j],tree,bnum);
+        branch(t,i,input,cur->next[curinput][j],tree,bnum*2+j);
+      }
+
+      ///EPSILON STUFF -- NOT WORKING
+      if (epsilon != -1) {
+        for (int k = 0; k<cur->next[epsilon].size(); k++) {
+          for (int m=0; m<cur->next[epsilon][k]->next[curinput].size(); m++) {
+            branch(t,i,input,cur->next[epsilon][k]->next[curinput][k],tree,bnum*2+k);
+          }
+        }
       }
     }
+
     //return true if any branch ends in an accept state
     if (t > 0)
       return true;
@@ -438,9 +531,13 @@ class FA {
 };
 
 int main() {
-    f.incomingFA("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "010011","string");
+    FA f;
+    //f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
+    //f.incomingFA("1,2,3", "1", "1", "a,b,E", "1;b;2;1;E;3;2;a;2,3;2;b;3;3;a;1,", "abaa", "string");
+    f.incomingFA("A,B,C,D", "B", "A,D", "0,E,1", "B;E;A,C;C;0;C,D;C;1;C,", "01100", "string");
     f.translateFA();
     //f.simulate("010011");
     //f.simulate("010101");
     f.simulate();
+    f.printDFA();
 }
