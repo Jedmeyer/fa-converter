@@ -5,11 +5,73 @@
 	<body>
 
 		    <script>
-			            function myFunction() {
+			            function addcells() {
 					                var div = document.getElementById('TransFunc');
 					                clone = div.cloneNode(true);
 					                document.getElementById("Funcs").appendChild(clone);
-					            }
+								}
+						function simulate(){
+										var instring = document.getElementById("input-stuff");
+							            var curUrl = location.href;
+							            var inputs = document.getElementsByClassName("textual");
+							            var inputs = Array.from(inputs);
+							            var state_str = '';
+										var acc_str = '';
+										var start_state = '';
+										var alpha_str = '';
+										var input_str = '';
+							            var bigstr = '';
+										var inc = 0;
+										var inc_3 = 0;
+							            inputs.forEach(function (element) {
+									                    if (element.value == null || element.value == 'Submit') {
+												                        return;
+												                    }
+
+									                    if (inc == 0) {
+												                        state_str = element.value;
+												                    }
+									                    else if (inc == 1) {
+																		start_state = element.value;
+																	}
+														else if (inc == 2){
+																		acc_str = element.value;
+
+																	}
+									                    else if (inc == 3) {
+												                        alpha_str = element.value;
+												                    }
+									                    else if (inc > 3){
+																		
+												                        var str = element.value;
+												                        str.trim();
+																		if(inc_3 == 2){
+																			bigstr = bigstr + str + ',';
+																			inc_3 = 0;
+																		}
+																		else{
+																			bigstr = bigstr + str + ';';
+																			inc_3 = inc_3 + 1;
+																		}
+																		
+																		console.log(str);
+												                    }
+									                    inc = inc + 1;
+									                })
+
+							            
+							            console.log(state_str);
+							            console.log(acc_str);
+							            console.log(alpha_str);
+										console.log(bigstr);
+										console.log(input_str);
+							           
+
+							            var newUrl = curUrl + "Build" + "?states=" + state_str + "&start=" +start_state + "&acc=" + acc_str + "&alpha=" + alpha_str + "&trans=" + bigstr + "&type=simulate" + "&instring=" + instring.value;
+										window.location = newUrl;
+
+
+						}
     </script>
 
         <p id="test">
@@ -19,11 +81,9 @@
 
 			        <script>
 					        function parse() {
-							            var children = document.getElementById('Funcs').childNodes;
-							            var array = Array.from(children);
 							            var curUrl = location.href;
 
-							            var inputs = document.getElementsByTagName("input");
+							            var inputs = document.getElementsByClassName("textual");
 							            var inputs = Array.from(inputs);
 
 							            var state_str = '';
@@ -37,9 +97,8 @@
 										var inc = 0;
 										var inc_3 = 0;
 							            inputs.forEach(function (element) {
-									                    if (element.value == null || element.value == 'Submit') {
-												                        return;
-												                    }
+									                    
+																	
 
 									                    if (inc == 0) {
 												                        state_str = element.value;
@@ -93,40 +152,44 @@
 			        <br />
 
 					<div>
-						Start_State = {<input type="text" name="start_state" value="" maxlength="1">}
+						Start_State = {<input type="text" class="textual" name="start_state" value="" maxlength="1">}
 					</div>
+					<br />
 				    <div>
-					            Acc_States = {<input type="text" name="acc_states" value="" maxlength="99">}
+					            Acc_States = {<input type="text"  class="textual" name="acc_states" value="" maxlength="99">}
 						        </div>
 
 							    <br />
 
 							        <div>
-									        Alphabet {<input type="text" name="alphabet" value="" maxlength="99">}
+									        Alphabet {<input type="text"  class="textual" name="alphabet" value="" maxlength="99">}
 										    </div>
 
 										        <br />
 
-											    <button onclick="myFunction()" type="submit" value="+">Add More Transition Functions</button> 
+											    <button onclick="addcells()" type="submit" value="+">Add More Transition Functions</button> 
 											        
 											        <br />
 												    <br/>
 
 												        <div>
 
-														        <div id="Funcs">
+													        <div id="Funcs">
 
-																            <div id="TransFunc" display="block">
-																		                    𝛿( <input type="text" name="curstate" value="" maxlength="1" size="1">,<input type="text" name="input" value="" maxlength="1" size="1"> ) = {<input type="text" name="nextstate" value="" maxlength="20">}<br>
-																				                </div>
+													            <div id="TransFunc" display="block">
+												                    𝛿( <input type="text"  class="textual" name="curstate" value="" maxlength="1" size="1">,<input type="text"  class="textual" name="input" value="" maxlength="1" size="1"> ) = {<input type="text"  class="textual" name="nextstate" value="" maxlength="20">}<br>
+												                </div>
 
-																						        </div>
-																							        <br>
-																								        <input onclick="parse()" type="submit" value="Submit">
-																									    </div>
+													        </div>
+													        <br>
+													        <input onclick="parse()" type="submit" value="Convert to DFA:">
+													    </div>
+														<br/>
+														NFA Simulation: <input type="text" id="input-stuff" value="" maxlength="30" size="1">
+														<input onclick="simulate()" type="submit" value="Simulate NFA!">
 
 
-																									        <p>Click the "Submit" button</p>
+	
 
 	</body>
 </html>

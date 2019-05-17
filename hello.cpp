@@ -29,12 +29,6 @@ void my_hello_world::main(std::string /*url*/)
 
     //Here we parse that good ole' query string for preparation
     //Basically use it to figure out what we execute.
-
-    map<string,string> simulate;
-    simulate.insert(pair<string,string>("type", "simulate"));
-    map<string,string> dfa;
-    dfa.insert(pair<string,string>("type", "DFA"));
-
     string qstring = request().query_string();
     ifstream webpage;
     string line;
@@ -57,15 +51,11 @@ void my_hello_world::main(std::string /*url*/)
     }
 
 
-    cout << "Is NFA?: " << qmap->find("type")->second  << " vs " << "simulate"<< endl; 
 
     // -----------------NFA OUTPUT PAGE---------------------//
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
-    if(qmap->find("type")->second == simulate.find("type")->second){
-
-
-    if(qmap->find("type") == simulate.begin()){
+    if(qmap->find("type")->second == "simulate"){
         FA f;
         f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
         //f.translateFA();
@@ -77,26 +67,19 @@ void my_hello_world::main(std::string /*url*/)
 
 
 
-
-
-
-
-    }
-
     // ----------------DFA OUTPUT PAGE----------------------//
     // =====================================================//
     // ----If (type value == DFA) - its the translated page---//
-    cout << "Is DFA?: " << qmap->find("type")->second  << " vs " << "DFA"<< endl; 
-    if(qmap->find("type")->second == dfa.find("type")->second){
+    if(qmap->find("type")->second == "DFA"){
 
         response().out() << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl
         << "<h2>States: </h2>" << endl
         << " "/* elaina states*/ << endl
         << "<h2>Alphabet: </h2>" << endl
-        << " "/* Jason  Alphabet*/ << endl
+        << qmap->find("alpha")->second << endl
         << "<h2>Accept States: </h2>" << endl
-        << " "/* Jason Accept State */ << endl
+        << qmap->find("acc")->second << endl
         << "<h2>Transition Functions: </h2>" << endl
         << " " /* Elaina  Trans function*/ << endl
         << "</body></html>";
