@@ -102,32 +102,32 @@ class FA {
   int startstate;
 
   public:
-  void printDFA(string alpha) {
+  ostream &printDFA(string alpha, ostream &o) {
     //States
-    std::cout << "States: {";
+    o << "States: {";
     for (int i=0; i<transFA.size(); i++) {
-      std::cout << transFA[i].name << ",";
+       << transFA[i].name << ",";
     }
-    std::cout << "}" << endl;
+    o << "}" << endl;
 
     //Start State
-    std::cout << "Start State: " << transFA[0].name << endl;
+    o << "Start State: " << transFA[0].name << endl;
 
     //Accept states
-    std::cout << "Accept States: {";
+    o << "Accept States: {";
     for (int i=0; i<numStates; i++) {
       if (initFA[i].accept == true) {
         for (int j=0; j<transFA.size(); j++) {
           if (transFA[j].id % initFA[i].id) {
-            std::cout << transFA[j].name << ",";
+            o<< transFA[j].name << ",";
           }
         }
       }
-      std::cout << "}" << endl;
+      o << "}" << endl;
     }
 
     //alphabet
-    std::cout << "Alphabet: {" << alpha << "}" << endl;
+    o << "Alphabet: {" << alpha << "}" << endl;
 
     //Transition Functions
 

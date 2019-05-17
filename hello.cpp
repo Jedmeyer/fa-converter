@@ -3,13 +3,13 @@
 #include <cppcms/service.h>
 #include <cppcms/http_response.h>
 #include <cppcms/http_request.h>
-#include<map>
+#include <map>
 #include <iostream>
-#include<sstream>
+#include <sstream>
 #include <fstream>
-#include<vector>
-#include"helper_functions.hpp"
-#include"FAclass.cpp"
+#include <vector>
+#include "helper_functions.hpp"
+#include "FAclass.cpp"
 using namespace std;
 
 
@@ -71,6 +71,14 @@ void my_hello_world::main(std::string /*url*/)
     // =====================================================//
     // ----If (type value == DFA) - its the translated page---//
     if(qmap->find("type")->second == "DFA"){
+
+
+        FA f;
+        f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
+        f.translateFA();
+        ostream out;
+
+        printDFA()
 
         response().out() << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl

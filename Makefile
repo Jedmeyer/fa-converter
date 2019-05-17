@@ -1,4 +1,4 @@
-LIBS=-lcppcms -lbooster
+LIBS=-lcppcms -lbooster -std=c++11
 
 
 all: hello
