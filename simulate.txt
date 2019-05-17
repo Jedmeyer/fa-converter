@@ -1,0 +1,20 @@
+Input: 010011
+
+Accepted: Yes
+
+Simulation Tree:
+
+	Input 
+		                                                               A                                                                
+	0:
+			                               A                                                               B                                
+	1:
+			               A                               C                               x                                                
+	0:
+			       A               B               x                                                                                        
+	0:
+			   A       B       D                                                                                                            
+	1:
+			 A   C   x       x                                                                                                              
+	1:
+			A C D                                                                                                                           

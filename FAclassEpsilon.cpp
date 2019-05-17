@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <queue>
 #include <vector>
@@ -486,7 +487,9 @@ class FA {
       return false;
   }
 
-  public: void simulate() {
+  public: void simulate(ofstream &out) {
+    out.open("simulate.txt");
+
     //call branch function to simulate input moving through states and cout results
     int inputsize = arrsize(input);
 
@@ -500,12 +503,12 @@ class FA {
     int bnum = 0;
 
     int t = 0; //tabs
-    cout << "INPUT: " << input << endl << endl;
+    out<< "Input: " << input << endl << endl << "Accepted: ";
     if (branch(t,0,input,&initFA[startstate],tree, bnum) == true)
-      cout << "Input " << input << " accepted." << endl;
+      out<< "Yes" << endl;
     else
-      cout << "Input " << input << " not accepted."<< endl;
-    cout << endl << endl;
+      out<< "No"<< endl;
+    out<< endl;
 
     //Printing Tree
     string* display = new string[inputsize+1];
@@ -520,26 +523,26 @@ class FA {
       }
     }
 
-    cout << "Tree for input " << input << endl;
-    cout << "Input";
-    cout << "\t" << display[0] << endl;
+    out<< "Simulation Tree:"<< endl << endl;
+    out<< "\tInput " << endl;
+    out<< "\t\t" << display[0] << endl;
     for (int i=1; i<=inputsize; i++) {
-      cout << input[i-1] << ":" << endl;
-      cout << "\t" << display[i] << endl;
+      out<< "\t" << input[i-1] << ":" << endl;
+      out<< "\t\t\t" << display[i] << endl;
     }
   }
 };
 
-/*
+
 int main() {
     FA f;
-    //f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
+    f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
     //f.incomingFA("1,2,3", "1", "1", "a,b,E", "1;b;2;1;E;3;2;a;2,3;2;b;3;3;a;1,", "abaa", "string");
-    f.incomingFA("A,B,C,D", "B", "A,D", "0,E,1", "B;E;A,C;C;0;C,D;C;1;C,", "01100", "string");
+    //f.incomingFA("A,B,C,D", "B", "A,D", "0,E,1", "B;E;A,C;C;0;C,D;C;1;C,", "01100", "string");
     f.translateFA();
     //f.simulate("010011");
     //f.simulate("010101");
-    f.simulate();
+    ofstream out;
+    f.simulate(out);
     f.printDFA();
 }
-*/
