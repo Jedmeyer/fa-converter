@@ -3,11 +3,7 @@
 #include <queue>
 #include <vector>
 #include <cmath>
-
-
 using namespace std;
-
-
 
 class State {
 public:
@@ -35,16 +31,16 @@ public:
 
 
   void printState(vector<char>alphaorder) {
-    std::cout << "State " << name << endl;
-    std::cout << "\tid " << id << endl;
-    std::cout << "\taccept " << accept << endl;
+    cout << "State " << name << endl;
+    cout << "\tid " << id << endl;
+    cout << "\taccept " << accept << endl;
     for (int i=0; i<next.size(); i++) {
-      std::cout <<"\tinput " << alphaorder[i] << endl;
-      std::cout << "\t\t";
+      cout <<"\tinput " << alphaorder[i] << endl;
+      cout << "\t\t";
       for (int j=0; j<next[i].size(); j++) {
-        if (next[i][j]!=NULL) {std::cout << next[i][j]->name << ", ";}
+        if (next[i][j]!=NULL) {cout << next[i][j]->name << ", ";}
       }
-      std::cout << endl;
+      cout << endl;
     }
   }
 };
@@ -101,33 +97,32 @@ class FA {
   char * input;
   int startstate;
 
-  public:
-  void printDFA(string alpha) {
+  public: void printDFA(string alpha) {
     //States
-    std::cout << "States: {";
+    cout << "States: {";
     for (int i=0; i<transFA.size(); i++) {
-      std::cout << transFA[i].name << ",";
+      cout << transFA.name << ","
     }
-    std::cout << "}" << endl;
+    cout << "}" << endl;
 
     //Start State
-    std::cout << "Start State: " << transFA[0].name << endl;
+    cout << "Start State: " transFA[0].name << endl;
 
     //Accept states
-    std::cout << "Accept States: {";
+    cout << "Accept States: {"};
     for (int i=0; i<numStates; i++) {
       if (initFA[i].accept == true) {
         for (int j=0; j<transFA.size(); j++) {
           if (transFA[j].id % initFA[i].id) {
-            std::cout << transFA[j].name << ",";
+            cout << transFA[j].name << ",";
           }
         }
       }
-      std::cout << "}" << endl;
+      cout << "}" << endl;
     }
 
     //alphabet
-    std::cout << "Alphabet: {" << alpha << "}" << endl;
+    cout << "Alphabet: {" << alpha << "}" << endl;
 
     //Transition Functions
 
@@ -244,11 +239,11 @@ class FA {
         }
     }
 
-    std::cout << "initFA data:" << endl;
+    cout << "initFA data:" << endl;
     for (int i=0; i<numStates; i++) {
       initFA[i].printState(alphaorder);
     }
-    std::cout << endl << endl;
+    cout << endl << endl;
   }
 
   public: void translateFA() {
@@ -271,7 +266,7 @@ class FA {
         //initializes each next to have size of number of letters in alphabet
         cur.next.resize(numAlpha);
 
-        //std::cout << "Current state " << cur.name << ", visit " << visit << endl;
+        //cout << "Current state " << cur.name << ", visit " << visit << endl;
 
         if (!visit & cur.name!="")
         {
@@ -307,6 +302,19 @@ class FA {
                             cur.next[j][0]->name = sortString(cur.next[j][0]->name);
                         }
                     }
+
+                    //Add Epsilon STUFF
+
+                    //Add nullstate stuff
+                    for (int k = 0; k < namechar->next[j].size(); k++)
+                    {
+                        if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
+                        {
+                            cur.next[j][0]->id *= namechar->next[j][k]->id;
+                            cur.next[j][0]->name += namechar->next[j][k]->name;
+                            cur.next[j][0]->name = sortString(cur.next[j][0]->name);
+                        }
+                    }
                 }
             }
 
@@ -324,7 +332,7 @@ class FA {
         }
     }
 
-    std::cout << "transFA data: " << endl;
+    cout << "transFA data: " << endl;
     for (int i=0; i<transFA.size(); i++) {
       transFA[i].printState(alphaorder);
     }
@@ -367,7 +375,7 @@ class FA {
         //if all characters have been inputed, then next state is final state.
         if (i == inputsize) {
           //next[j] = next[j]->e_next[0];
-          //std::cout << tab << "Branch final state: " << cur->next[curinput][j]->name << endl << endl;
+          //cout << tab << "Branch final state: " << cur->next[curinput][j]->name << endl << endl;
           tree[i][bnum] = cur->next[curinput][j]->name;
           //increment t if final state is an accept state
           if (cur->next[curinput][j]->accept == true) {
@@ -386,7 +394,7 @@ class FA {
   }
 
   public: void simulate() {
-    //call branch function to simulate input moving through states and std::cout results
+    //call branch function to simulate input moving through states and cout results
     int inputsize = arrsize(input);
 
     string** tree = new string*[inputsize+1];
@@ -399,12 +407,12 @@ class FA {
     int bnum = 0;
 
     int t = 0; //tabs
-    std::cout << "INPUT: " << input << endl << endl;
+    cout << "INPUT: " << input << endl << endl;
     if (branch(t,0,input,&initFA[startstate],tree, bnum) == true)
-      std::cout << "Input " << input << " accepted." << endl;
+      cout << "Input " << input << " accepted." << endl;
     else
-      std::cout << "Input " << input << " not accepted."<< endl;
-    std::cout << endl << endl;
+      cout << "Input " << input << " not accepted."<< endl;
+    cout << endl << endl;
 
     //Printing Tree
     string* display = new string[inputsize+1];
@@ -419,12 +427,20 @@ class FA {
       }
     }
 
-    std::cout << "Tree for input " << input << endl;
-    std::cout << "Input";
-    std::cout << "\t" << display[0] << endl;
+    cout << "Tree for input " << input << endl;
+    cout << "Input";
+    cout << "\t" << display[0] << endl;
     for (int i=1; i<=inputsize; i++) {
-      std::cout << input[i-1] << ":" << endl;
-      std::cout << "\t" << display[i] << endl;
+      cout << input[i-1] << ":" << endl;
+      cout << "\t" << display[i] << endl;
     }
   }
 };
+
+int main() {
+    f.incomingFA("A,B,C,D", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D;", "010011","string");
+    f.translateFA();
+    //f.simulate("010011");
+    //f.simulate("010101");
+    f.simulate();
+}
