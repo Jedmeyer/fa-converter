@@ -20,7 +20,12 @@ public:
   bool accept = false;
 
   State(string n) { name = n; }
-  State(string n,int iden) {name = n; id = iden;}
+  State(string n,int iden) {name = n; id = iden;};
+  State(const State &n){
+    name = n.name;
+    id = n.id;
+    next = n.next;
+  };
   State() {
       name = "";
       id = 1;
@@ -281,7 +286,7 @@ class FA {
                     {
                         //add to initFA next
                         //Dangling Reference??
-                        initFA[curState].next[curinput].push_back(&initFA[j]);
+                        initFA[curState].next[curinput].push_back(new State(initFA[j]));
                         break;
                     }
                 }
