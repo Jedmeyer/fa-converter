@@ -4,6 +4,11 @@
 #include <queue>
 #include <vector>
 #include <cmath>
+#include <algorithm>
+#include <cstring>
+#include <sstream>
+
+
 using namespace std;
 
 class State {
@@ -89,7 +94,7 @@ class FA {
 
   // function to print string in sorted order
   public: string sortString(string &str) {
-     sort(str.begin(), str.end());
+     std::sort(str.begin(), str.end());
      return str;
   }
 
@@ -158,7 +163,7 @@ class FA {
 
   public: void incomingFA(string states, string start, string acc, string alpha, string trans, string instring, string type) {
      input = new char[instring.length() + 1];
-     strcpy(input,instring.c_str());
+     std::strcpy(input,instring.c_str());
 
     //States
     initFA.resize(0);
@@ -536,7 +541,7 @@ class FA {
   }
 };
 
-
+/*
 int main() {
     FA f;
     f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
@@ -547,5 +552,10 @@ int main() {
     //f.simulate("010101");
     stringstream out;
     f.simulate(out);
-    f.printDFA();
-}
+    cout << "SIMULATION: " << out.str() << endl;;
+
+    f.printDFA(out);
+    cout << "DFA: " << out.str() << endl;;
+
+} */ 
+
