@@ -1,0 +1,15 @@
+States: {A,AC,ACD,AB,ABD,}
+Start State: A
+Accept States: {ACD,ABD,}
+Alphabet: {0,1,}
+Transition Functions:
+d(A,0) = AB
+d(A,1) = AC
+d(AC,0) = AB
+d(AC,1) = ACD
+d(ACD,0) = AB
+d(ACD,1) = ACD
+d(AB,0) = ABD
+d(AB,1) = AC
+d(ABD,0) = ABD
+d(ABD,1) = AC
