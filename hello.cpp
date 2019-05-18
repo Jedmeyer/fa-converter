@@ -77,29 +77,18 @@ void my_hello_world::main(std::string /*url*/)
         FA f;
         f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
         f.translateFA();
-        ostream out;
 
-        printDFA(&out);
+        stringstream buffer;
 
-        response().out()<< 
+        f.printDFA(buffer);
+
+        response().out()
         << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl 
-        << "<p>" << out << "</p>";
+        << "<p>" << buffer.str() << "</p>";
         
         
-        
-        /*
-        << "<!DOCTYPE html><html>" << endl
-        << "<body> <h1>DFA Created: </h1>" << endl
-        << "<h2>States: </h2>" << endl
-        << " "/* elaina states*//* << endl
-        << "<h2>Alphabet: </h2>" << endl
-        << qmap->find("alpha")->second << endl
-        << "<h2>Accept States: </h2>" << endl
-        << qmap->find("acc")->second << endl
-        << "<h2>Transition Functions: </h2>" << endl
-        << " " /* Elaina  Trans function*//* << endl
-        << "</body></html>";*/
+     
     }
 
 
