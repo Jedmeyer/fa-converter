@@ -60,6 +60,7 @@ void my_hello_world::main(std::string /*url*/)
         qgive.push_back(content);        
         qmap.insert( pair<string,string>(title,content));
     }
+        qmap.insert(pair<string, string>("zdumb", "zdumb"));
 
 
 
