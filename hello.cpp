@@ -34,9 +34,12 @@ void my_hello_world::main(std::string /*url*/)
 
     //Here we parse that good ole' query string for preparation
     //Basically use it to figure out what we execute.
-    stringstream f(qstring);
+
     vector<string> qparsed;
+    vector<string> qgive;
     map<string,string> qmap;
+    stringstream f;
+
     // Parse Everything into a vector
     string all; 
     while(getline(f, all, '&'))
@@ -52,11 +55,11 @@ void my_hello_world::main(std::string /*url*/)
         stringstream g(qparsed[i]);
         getline(g, title, '='); //Get the key value
         getline(g, content);    //Get the value... value?
-        qmap.insert(pair<string,string>(title,content));
-    }
 
-    //Inserted to make it easier to be able to find the end
-    qmap.insert(pair<string,string>("zdummy", "zdummy"));
+        cout << "found: " << title << " with: " << endl;
+        qgive.push_back(content);        
+        qmap.insert( pair<string,string>(title,content));
+    }
 
 
 
@@ -85,7 +88,7 @@ void my_hello_world::main(std::string /*url*/)
         cout << "We're gonna SIMULATE for a client!\n";
         FA f;
 
-        f.incomingFA(qmap.find("states")->second,qmap.find("start")->second,qmap.find("acc")->second,qmap.find("alpha")->second,qmap.find("trans")->second,qmap.find("input")->second,qmap.find("type")->second);
+        f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
