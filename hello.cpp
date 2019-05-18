@@ -101,7 +101,7 @@ void my_hello_world::main(std::string /*url*/)
         FA f;
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         for(int i=0; i<qgive.size(); i++)
-            cout << qgive[i];
+            cout << qgive[i] << endl;
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
