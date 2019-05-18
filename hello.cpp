@@ -32,6 +32,7 @@ void my_hello_world::main(std::string /*url*/)
     
     string qstring = request().query_string();
     ifstream webpage;
+    ifstream simulate;
     string line;
     webpage.open("./html-pages/front-page.html");
 
@@ -102,18 +103,19 @@ void my_hello_world::main(std::string /*url*/)
         string send = f.simulate();
         
         system("cat simulate.txt | ./terminal-to-html -preview > out.html");
-        webpage.open("./out.html");
+        simulate.open("./out.html");
         usleep(3000000);
         response().out()<< "<!DOCTYPE html><html>" << endl
         << "<body> <h1>Simulation Created: </h1>" << endl; 
-        if (webpage.is_open())
+        if (simulate.is_open())
         {
             cout << "out.html opened!" << endl;
-            while ( getline (webpage,line))
+            while ( getline (simulate,line))
             {
+                cout << line;
                 response().out() << line << '\n';
             }
-            webpage.close();
+            simulate.close();
              
         }
 
