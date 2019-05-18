@@ -96,14 +96,14 @@ void my_hello_world::main(std::string /*url*/)
     if(qmap.find("type")->second == "simulate"){
         cout << "We're gonna SIMULATE for a client!\n";
 
-        /*
+    
         FA f;
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
         string send = f.simulate();
-        */
+        
         system("cat simulate.txt | ./terminal-to-html -preview > out.html");
         simulate.open("./out.html");
         usleep(500000);
@@ -133,11 +133,10 @@ void my_hello_world::main(std::string /*url*/)
         
         cout << "We're gonna CONVERT for a client!\n";
     
-        /*
+
         FA f;
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         f.translateFA();
-        */
 
         system("cat print.txt | ./terminal-to-html -preview > out.html");
         usleep(500000);
