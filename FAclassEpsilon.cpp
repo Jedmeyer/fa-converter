@@ -560,16 +560,16 @@ class FA {
     }
 
     output+="Simulation Tree:<p> </p><p> </p>";
-    output+="\tInput <p> </p>";
-    output+="\t\t";
+    output+="&#9;Input <p> </p>";
+    output+="&#9;&#9;";
     output+=display[0];
     output+="<p> </p>";
 
     for (int i=1; i<=inputsize; i++) {
-      output+="\t";
+      output+="&#9;";
       output+=input[i-1];
       output+=":<p> </p>";
-      output+="\t\t\t";
+      output+="&#9;&#9;&#9;";
       output+=display[i];
       output+="<p> </p>";
       
