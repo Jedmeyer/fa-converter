@@ -67,6 +67,7 @@ void my_hello_world::main(std::string /*url*/)
         qmap.insert(pair<string, string>("zdumb", "zdumb"));
     for(int i=0; i<qgive.size(); i++)
         cout << qgive[i];
+        
     
 
     // ------------------LANDING Page-----------------------//
