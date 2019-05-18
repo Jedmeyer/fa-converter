@@ -9,6 +9,9 @@
 #include <fstream>
 #include <vector>
 #include "FAclassEpsilon.cpp"
+#include <unistd.h>
+
+
 using namespace std;
 
 
@@ -56,7 +59,7 @@ void my_hello_world::main(std::string /*url*/)
         getline(g, title, '='); //Get the key value
         getline(g, content);    //Get the value... value?
 
-        cout << "found: " << title << " with: " << endl;
+        cout << "found: " << title << " with: " << content << endl;
         qgive.push_back(content);        
         qmap.insert( pair<string,string>(title,content));
     }
@@ -93,6 +96,7 @@ void my_hello_world::main(std::string /*url*/)
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
+        usleep(1000000);
         webpage.open("simulate.txt"); 
         response().out()<< "<!DOCTYPE html><html>" << endl
         << "<body> <h1>Simulate Created: </h1>" << endl ;
@@ -123,6 +127,7 @@ void my_hello_world::main(std::string /*url*/)
         f.incomingFA(qmap.find("states")->second,qmap.find("start")->second,qmap.find("acc")->second,qmap.find("alpha")->second,qmap.find("trans")->second,qmap.find("input")->second,qmap.find("type")->second);
         f.translateFA();
 
+        usleep(1000000);
         webpage.open("print.txt"); 
 
         response().out()
