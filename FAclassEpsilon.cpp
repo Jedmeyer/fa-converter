@@ -181,7 +181,7 @@ class FA {
     initFA.resize(0);
     for (int i = 0; i<states.length(); i++)
     {
-        if (states[i] != ',' & states[i] != ' ')
+        if (states[i] != ',' && states[i] != ' ')
         {
             initFA.push_back(string(1,states[i]));
             initFA[numStates].id = primes[primetracker];
@@ -193,7 +193,7 @@ class FA {
     //start and acc
     for (int i = 0; i < acc.length(); i++)
     {
-        if (acc[i] != ',' & acc[i] != ' ')
+        if (acc[i] != ',' && acc[i] != ' ')
         {
             for (int j=0; j < numStates; j++)
             {
@@ -212,7 +212,7 @@ class FA {
     alphaorder.resize(0);
     for (int i=0; i<alpha.length(); i++)
     {
-        if (alpha[i]!=',' & alpha[i]!=' ')
+        if (alpha[i]!=',' && alpha[i]!=' ')
         {
             alphaorder.push_back(alpha[i]);
             if (alpha[i] == 'E') {
@@ -266,9 +266,9 @@ class FA {
         i+=2; //move to nextstates
 
         //find next states
-        while(trans[i] != ';' & i<trans.length())
+        while(trans[i] != ';' && i<trans.length())
         {
-            if (trans[i] != ',' & trans[i] !=' ')
+            if (trans[i] != ',' && trans[i] !=' ')
             {
                 //find State that matches input[k]
                 for (int j = 0; j < numStates; j++)
@@ -276,6 +276,7 @@ class FA {
                     if (initFA[j].name == string(1,trans[i]))
                     {
                         //add to initFA next
+                        //Dangling Reference??
                         initFA[curState].next[curinput].push_back(&initFA[j]);
                         break;
                     }
@@ -326,7 +327,7 @@ class FA {
         cur.next.resize(numAlpha);
 
         //cout << "Current state " << cur.name << ", visit " << visit << endl;
-        if (!visit & cur.name!="" & cur.name!="Ø")
+        if (!visit && cur.name!="" && cur.name!="Ø")
         {
             //for all characters in current State's name
             for (int i=0; i<cur.name.length(); i++)
