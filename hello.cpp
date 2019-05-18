@@ -123,6 +123,7 @@ void my_hello_world::main(std::string /*url*/)
         
      
     }
+    delete qmap;
 
 
 }
