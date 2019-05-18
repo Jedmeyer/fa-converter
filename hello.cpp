@@ -34,11 +34,11 @@ void my_hello_world::main(std::string /*url*/)
 
     //Here we parse that good ole' query string for preparation
     //Basically use it to figure out what we execute.
-    istringstream f(qstring);
+    stringstream f(qstring);
     vector<string> qparsed;
     map<string,string> qmap;
     // Parse Everything into a vector
-    string all;  
+    string all; 
     while(getline(f, all, '&'))
     {
         qparsed.push_back(all);
@@ -49,7 +49,7 @@ void my_hello_world::main(std::string /*url*/)
     string title;
     string content;
     for(int i =0; i< qparsed.size(); i++){
-        istringstream g(qparsed[i]);
+        stringstream g(qparsed[i]);
         getline(g, title, '='); //Get the key value
         getline(g, content);    //Get the value... value?
         qmap.insert(pair<string,string>(title,content));
