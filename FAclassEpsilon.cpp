@@ -585,7 +585,9 @@ class FA {
 int main() {
     FA f;
     string s1,s2;
-    //f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "string","010011");
+    //simulate works with dis one.
+    f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "string","010011");
+    // translate with this one
     //f.incomingFA("1,2,3", "1", "1", "a,b,E", "1;b;2;1;E;3;2;a;2,3;2;b;3;3;a;1,", "string", "abaa");
     //f.incomingFA("A,B,C,D", "B", "A,D", "0,E,1", "B;E;A,C;C;0;C,D;C;1;C,", "string", "01100");
     f.translateFA();
@@ -598,5 +600,5 @@ int main() {
     s2 = f.printDFA();
     cout << "DFA: " << s2 << endl;;
 
-} */
-
+} 
+*/
