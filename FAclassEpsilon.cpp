@@ -560,16 +560,16 @@ class FA {
     }
 
     output+="Simulation Tree:<br/><br/>";
-    output+="<pre>&&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</pre>Input <br/>";
-    output+="<pre>&&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</pre><pre>&&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</pre>";
+    output+="<pre>              </pre>Input <br/>";
+    output+="<pre>              </pre><pre>              </pre>";
     output+=display[0];
     output+="<br/>";
 
     for (int i=1; i<=inputsize; i++) {
-      output+="<pre>&&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</pre>";
+      output+="<pre>              </pre>";
       output+=input[i-1];
       output+=":<br/>";
-      output+="<pre>&&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</pre><pre>&&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</pre><pre>&&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</pre>";
+      output+="<pre>              </pre><pre>              </pre><pre>              </pre>";
       output+=display[i];
       output+="<br/>";
       
