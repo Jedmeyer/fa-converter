@@ -10,7 +10,6 @@
 #include <vector>
 #include "FAclassEpsilon.cpp"
 #include <unistd.h>
-#include <boost/function.hpp>
 
 
 using namespace std;
