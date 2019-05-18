@@ -46,12 +46,13 @@ void my_hello_world::main(std::string /*url*/)
     {
         qparsed.push_back(all);
     }
+    cout << all << endl;
 
 
     // Sepearate variable names and values and throw them into the query map
     string title;
     string content;
-    for(int i =0; i< qparsed.size(); i++){
+    for(int i =0 ; i< qparsed.size(); i++){
         stringstream g(qparsed[i]);
         getline(g, title, '='); //Get the key value
         getline(g, content);    //Get the value... value?
