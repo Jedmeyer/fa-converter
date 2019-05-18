@@ -4,6 +4,11 @@
 #include <queue>
 #include <vector>
 #include <cmath>
+#include <algorithm>
+#include <cstring>
+#include <sstream>
+
+
 using namespace std;
 
 class State {
@@ -89,7 +94,7 @@ class FA {
 
   // function to print string in sorted order
   public: string sortString(string &str) {
-     sort(str.begin(), str.end());
+     std::sort(str.begin(), str.end());
      return str;
   }
 
@@ -103,45 +108,57 @@ class FA {
   }
 
   public:
-  void printDFA(stringstream &o) {
-
+  string printDFA() {
+    string output;
     //States
-    o << "States: {";
+    output+= "States: {";
     for (int i=0; i<transFA.size(); i++) {
-      o << transFA[i].name << ",";
+      output+= transFA[i].name;
+      output+=",";
     }
-    o << "}" << endl;
+    output+="}\n";
 
     //Start State
-    o << "Start State: " << transFA[0].name << endl;
+    output+="Start State: ";
+    output+=transFA[0].name;
+    output+="\n";
 
     //Accept states
-    o << "Accept States: {";
+    output+="Accept States: {";
     for (int i=0; i<numStates; i++) {
       if (initFA[i].accept == true) {
         for (int j=0; j<transFA.size(); j++) {
           if (transFA[j].id % initFA[i].id == 0) {
-            o << transFA[j].name << ",";
+            output+=transFA[j].name;
+            output+=",";
           }
         }
       }
     }
-    o << "}" << endl;
+    output+="}\n";
 
     //alphabet
-    o << "Alphabet: {";
+    output+="Alphabet: {";
     for (int i=0; i<numAlphaDFA; i++) {
-      o << alphaorder[i] << ",";
+      output+=alphaorder[i];
+      output+=",";
     }
-    o << "}" << endl;
+    output+="}\n";
 
     //Transition Functions
-    o << "Transition Functions:" << endl;
+    output+="Transition Functions:\n";
     for (int i=0; i<transFA.size(); i++) {
       for (int j=0; j<numAlphaDFA; j++) {
-        o << "𝛿(" << transFA[i].name << "," << alphaorder[j] << ") = " << transFA[i].next[j][0]->name << endl;
+        output+="d(";
+        output+=transFA[i].name;
+        output+=",";
+        output+=alphaorder[j];
+        output+=") = ";
+        output+=transFA[i].next[j][0]->name;
+        output+="\n";
       }
     }
+    return output;
   }
 
   public: bool inStateList(vector<State> Func, State cur) {
@@ -158,13 +175,13 @@ class FA {
 
   public: void incomingFA(string states, string start, string acc, string alpha, string trans, string instring, string type) {
      input = new char[instring.length() + 1];
-     strcpy(input,instring.c_str());
+     std::strcpy(input,instring.c_str());
 
     //States
     initFA.resize(0);
     for (int i = 0; i<states.length(); i++)
     {
-        if (states[i] != ',' & states[i] != ' ')
+        if (states[i] != ',' && states[i] != ' ')
         {
             initFA.push_back(string(1,states[i]));
             initFA[numStates].id = primes[primetracker];
@@ -176,7 +193,7 @@ class FA {
     //start and acc
     for (int i = 0; i < acc.length(); i++)
     {
-        if (acc[i] != ',' & acc[i] != ' ')
+        if (acc[i] != ',' && acc[i] != ' ')
         {
             for (int j=0; j < numStates; j++)
             {
@@ -195,7 +212,7 @@ class FA {
     alphaorder.resize(0);
     for (int i=0; i<alpha.length(); i++)
     {
-        if (alpha[i]!=',' & alpha[i]!=' ')
+        if (alpha[i]!=',' && alpha[i]!=' ')
         {
             alphaorder.push_back(alpha[i]);
             if (alpha[i] == 'E') {
@@ -249,9 +266,9 @@ class FA {
         i+=2; //move to nextstates
 
         //find next states
-        while(trans[i] != ';' & i<trans.length())
+        while(trans[i] != ';' && i<trans.length())
         {
-            if (trans[i] != ',' & trans[i] !=' ')
+            if (trans[i] != ',' && trans[i] !=' ')
             {
                 //find State that matches input[k]
                 for (int j = 0; j < numStates; j++)
@@ -259,6 +276,7 @@ class FA {
                     if (initFA[j].name == string(1,trans[i]))
                     {
                         //add to initFA next
+                        //Dangling Reference??
                         initFA[curState].next[curinput].push_back(&initFA[j]);
                         break;
                     }
@@ -309,7 +327,7 @@ class FA {
         cur.next.resize(numAlpha);
 
         //cout << "Current state " << cur.name << ", visit " << visit << endl;
-        if (!visit & cur.name!="" & cur.name!="Ø")
+        if (!visit && cur.name!="" && cur.name!="Ø")
         {
             //for all characters in current State's name
             for (int i=0; i<cur.name.length(); i++)
@@ -495,8 +513,11 @@ class FA {
       return false;
   }
 
-  public: void simulate(stringstream &out) {
+  public: 
+  
+  string simulate() {
 
+    string output;
     //call branch function to simulate input moving through states and cout results
     int inputsize = arrsize(input);
 
@@ -510,12 +531,16 @@ class FA {
     int bnum = 0;
 
     int t = 0; //tabs
-    out<< "Input: " << input << endl << endl << "Accepted: ";
+    output+="Input: ";
+    output+=input;
+    output+="\n\n";
+    output+="Accepted: ";
+
     if (branch(t,0,input,&initFA[startstate],tree, bnum) == true)
-      out<< "Yes" << endl;
+      output+="Yes\n";
     else
-      out<< "No"<< endl;
-    out<< endl;
+      output+="No\n";
+    output+="\n";
 
     //Printing Tree
     string* display = new string[inputsize+1];
@@ -530,17 +555,26 @@ class FA {
       }
     }
 
-    out<< "Simulation Tree:"<< endl << endl;
-    out<< "\tInput " << endl;
-    out<< "\t\t" << display[0] << endl;
+    output+="Simulation Tree:\n\n";
+    output+="\tInput \n";
+    output+="\t\t";
+    output+=display[0];
+    output+="\n";
+
     for (int i=1; i<=inputsize; i++) {
-      out<< "\t" << input[i-1] << ":" << endl;
-      out<< "\t\t\t" << display[i] << endl;
+      output+="\t";
+      output+=input[i-1];
+      output+=":\n";
+      output+="\t\t\t";
+      output+=display[i];
+      output+="\n";
+      
     }
+    return output;
   }
 };
 
-
+/*
 int main() {
     FA f;
     f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
@@ -551,5 +585,10 @@ int main() {
     //f.simulate("010101");
     stringstream out;
     f.simulate(out);
-    f.printDFA();
-}
+    cout << "SIMULATION: " << out.str() << endl;;
+
+    f.printDFA(out);
+    cout << "DFA: " << out.str() << endl;;
+
+} */ 
+
