@@ -490,7 +490,9 @@ class FA {
       return false;
   }
 
-  public: void simulate(ofstream &out) {
+  public: 
+  
+  void simulate(ofstream &out) {
     out.open("simulate.txt");
 
     //call branch function to simulate input moving through states and cout results
