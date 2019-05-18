@@ -574,11 +574,7 @@ class FA {
       output+="<br/>";
       
     }
-      output+='''pre {
-    font-size: .7rem;
-    margin: 0;
-}
-      ''';
+    output+="pre {font-size: .7rem;margin: 0;}";
     ofstream file("simulate.txt");
 
     file << output;
