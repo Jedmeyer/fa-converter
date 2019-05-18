@@ -584,18 +584,19 @@ class FA {
 /*
 int main() {
     FA f;
-    f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
-    //f.incomingFA("1,2,3", "1", "1", "a,b,E", "1;b;2;1;E;3;2;a;2,3;2;b;3;3;a;1,", "abaa", "string");
-    //f.incomingFA("A,B,C,D", "B", "A,D", "0,E,1", "B;E;A,C;C;0;C,D;C;1;C,", "01100", "string");
+    string s1,s2;
+    //f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "string","010011");
+    //f.incomingFA("1,2,3", "1", "1", "a,b,E", "1;b;2;1;E;3;2;a;2,3;2;b;3;3;a;1,", "string", "abaa");
+    //f.incomingFA("A,B,C,D", "B", "A,D", "0,E,1", "B;E;A,C;C;0;C,D;C;1;C,", "string", "01100");
     f.translateFA();
     //f.simulate("010011");
     //f.simulate("010101");
     stringstream out;
-    f.simulate(out);
-    cout << "SIMULATION: " << out.str() << endl;;
+    s1 = f.simulate();
+    cout << "SIMULATION: " << s1;
 
-    f.printDFA(out);
-    cout << "DFA: " << out.str() << endl;;
+    s2 = f.printDFA();
+    cout << "DFA: " << s2 << endl;;
 
-} */ 
+} */
 

@@ -33,6 +33,7 @@ void my_hello_world::main(std::string /*url*/)
     string qstring = request().query_string();
     ifstream webpage;
     ifstream simulate;
+    ifstream dfa;
     string line;
     webpage.open("./html-pages/front-page.html");
 
@@ -127,7 +128,7 @@ void my_hello_world::main(std::string /*url*/)
     // =====================================================//
     // ----If (type value == DFA) - its the translated page---//
     if(qmap.find("type")->second == "DFA"){
-        /*
+        
         
         cout << "We're gonna CONVERT for a client!\n";
     
@@ -136,23 +137,25 @@ void my_hello_world::main(std::string /*url*/)
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         f.translateFA();
 
-        usleep(1000000);
-        webpage.open("print.txt"); 
+        system("cat print.txt | ./terminal-to-html -preview > out.html");
+        usleep(500000);
+
+        dfa.open("out.html"); 
 
         response().out()
         << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl;
-        if (webpage.is_open())
+        if (dfa.is_open())
         {
-            while ( getline (webpage,line))
+            while ( getline (dfa,line))
             {
                 response().out() << line << '\n';
             }
-            webpage.close();
+            dfa.close();
              
         }
 
-     */
+     
     }
 
 
