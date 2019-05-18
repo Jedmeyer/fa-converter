@@ -38,8 +38,7 @@ void my_hello_world::main(std::string /*url*/)
     vector<string> qparsed;
     vector<string> qgive;
     map<string,string> qmap;
-    stringstream f;
-
+    stringstream f(qstring);
     // Parse Everything into a vector
     string all; 
     while(getline(f, all, '&'))
