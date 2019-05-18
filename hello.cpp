@@ -64,13 +64,14 @@ void my_hello_world::main(std::string /*url*/)
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
-        stringstream buffer;
 
-        f.simulate(buffer);
-        string s2 = buffer.str();
-        cout <<"sstream test: " << buffer.str() << endl;
-        cout << "s2 test: " << s2 << endl;
-        response().out() << buffer.str() << endl;
+        string output_response = f.simulate();
+    
+        cout << "s2 test: " << output_response << endl;
+        response().out()
+        << "<!DOCTYPE html><html>" << endl
+        << "<body> <h1>DFA Created: </h1>" << endl 
+        << "<p>" << output_response << "</p>";
       }
 
 
@@ -87,14 +88,11 @@ void my_hello_world::main(std::string /*url*/)
         f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
         f.translateFA();
 
-        stringstream buffer;
-
-        f.printDFA(buffer);
-
+        string output_response = f.printDFA();
         response().out()
         << "<!DOCTYPE html><html>" << endl
         << "<body> <h1>DFA Created: </h1>" << endl 
-        << "<p>" << buffer.str() << "</p>";
+        << "<p>" << output_response << "</p>";
         
         
      

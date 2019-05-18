@@ -108,45 +108,57 @@ class FA {
   }
 
   public:
-  void printDFA(stringstream &o) {
-
+  string printDFA() {
+    string output;
     //States
-    o << "States: {";
+    output+= "States: {";
     for (int i=0; i<transFA.size(); i++) {
-      o << transFA[i].name << ",";
+      output+= transFA[i].name;
+      output+=",";
     }
-    o << "}" << endl;
+    output+="}\n";
 
     //Start State
-    o << "Start State: " << transFA[0].name << endl;
+    output+="Start State: ";
+    output+=transFA[0].name;
+    output+="\n";
 
     //Accept states
-    o << "Accept States: {";
+    output+="Accept States: {";
     for (int i=0; i<numStates; i++) {
       if (initFA[i].accept == true) {
         for (int j=0; j<transFA.size(); j++) {
           if (transFA[j].id % initFA[i].id == 0) {
-            o << transFA[j].name << ",";
+            output+=transFA[j].name;
+            output+=",";
           }
         }
       }
     }
-    o << "}" << endl;
+    output+="}\n";
 
     //alphabet
-    o << "Alphabet: {";
+    output+="Alphabet: {";
     for (int i=0; i<numAlphaDFA; i++) {
-      o << alphaorder[i] << ",";
+      output+=alphaorder[i];
+      output+=",";
     }
-    o << "}" << endl;
+    output+="}\n";
 
     //Transition Functions
-    o << "Transition Functions:" << endl;
+    output+="Transition Functions:\n";
     for (int i=0; i<transFA.size(); i++) {
       for (int j=0; j<numAlphaDFA; j++) {
-        o << "𝛿(" << transFA[i].name << "," << alphaorder[j] << ") = " << transFA[i].next[j][0]->name << endl;
+        output+="d(";
+        output+=transFA[i].name;
+        output+=",";
+        output+=alphaorder[j];
+        output+=") = ";
+        output+=transFA[i].next[j][0]->name;
+        output+="\n";
       }
     }
+    return output;
   }
 
   public: bool inStateList(vector<State> Func, State cur) {
@@ -496,8 +508,11 @@ class FA {
       return false;
   }
 
-  public: void simulate(stringstream &out) {
+  public: 
+  
+  string simulate() {
 
+    string output;
     //call branch function to simulate input moving through states and cout results
     int inputsize = arrsize(input);
 
@@ -511,12 +526,16 @@ class FA {
     int bnum = 0;
 
     int t = 0; //tabs
-    out<< "Input: " << input << endl << endl << "Accepted: ";
+    output+="Input: ";
+    output+=input;
+    output+="\n\n";
+    output+="Accepted: ";
+
     if (branch(t,0,input,&initFA[startstate],tree, bnum) == true)
-      out<< "Yes" << endl;
+      output+="Yes\n";
     else
-      out<< "No"<< endl;
-    out<< endl;
+      output+="No\n";
+    output+="\n";
 
     //Printing Tree
     string* display = new string[inputsize+1];
@@ -531,13 +550,22 @@ class FA {
       }
     }
 
-    out<< "Simulation Tree:"<< endl << endl;
-    out<< "\tInput " << endl;
-    out<< "\t\t" << display[0] << endl;
+    output+="Simulation Tree:\n\n";
+    output+="\tInput \n";
+    output+="\t\t";
+    output+=display[0];
+    output+="\n";
+
     for (int i=1; i<=inputsize; i++) {
-      out<< "\t" << input[i-1] << ":" << endl;
-      out<< "\t\t\t" << display[i] << endl;
+      output+="\t";
+      output+=input[i-1];
+      output+=":\n";
+      output+="\t\t\t";
+      output+=display[i];
+      output+="\n";
+      
     }
+    return output;
   }
 };
 
