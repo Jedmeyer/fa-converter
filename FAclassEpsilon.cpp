@@ -332,7 +332,8 @@ class FA {
             //for all characters in current State's name
             for (int i=0; i<cur.name.length(); i++)
             {
-                State* namechar = NULL;
+                //State* namechar = NULL;
+                int namechar = -1;
 
                 //find State that matches input[k]
                 for (int j = 0; j < numStates; j++)
@@ -340,7 +341,8 @@ class FA {
                     if (initFA[j].name == string(1,cur.name[i]))
                     {
                         //add to initFA next
-                        namechar = &initFA[j];
+                        //namechar = &initFA[j];
+                        namechar = j;
                     }
                 }
                 //for all input possiblities
@@ -353,12 +355,12 @@ class FA {
                   }
 
                   //for all States that current character State goes to on current input
-                  for (int k = 0; k < namechar->next[j].size(); k++)
+                  for (int k = 0; k < initFA[namechar].next[j].size(); k++)
                   {
-                      if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
+                      if (cur.next[j][0]->id % initFA[namechar].next[j][k]->id != 0)
                       {
-                          cur.next[j][0]->id *= namechar->next[j][k]->id;
-                          cur.next[j][0]->name += namechar->next[j][k]->name;
+                          cur.next[j][0]->id *= initFA[namechar].next[j][k]->id;
+                          cur.next[j][0]->name += initFA[namechar].next[j][k]->name;
                           cur.next[j][0]->name = sortString(cur.next[j][0]->name);
                           /*if (namechar->next[j][k]->accept == true) {
                             cur.next[j][0]->accept = true;
@@ -374,7 +376,8 @@ class FA {
           if (epsilon != -1) {
              for (int i=0; i<cur.next[epsilon][0]->name.length(); i++)
              {
-                  State* namechar = NULL;
+                  int namechar = -1;
+                  //State* namechar = NULL;
 
                   //find State that matches input[k]
                  for (int j = 0; j < numStates; j++)
@@ -382,7 +385,8 @@ class FA {
                      if (initFA[j].name == string(1,cur.next[epsilon][0]->name[i]))
                      {
                          //add to initFA next
-                         namechar = &initFA[j];
+                         //namechar = &initFA[j];
+                         namechar = j;
                      }
                  }
 
@@ -390,17 +394,17 @@ class FA {
                  for (int j=0; j<numAlpha; j++)
                  {
                      //for all States that current character State goes to on current input
-                     for (int k = 0; k < namechar->next[j].size(); k++)
+                     for (int k = 0; k < initFA[namechar].next[j].size(); k++)
                      {
-                       if (namechar->next[j][k]->id != 1) {
-                           if (cur.next[j][0]->id % namechar->next[j][k]->id != 0)
+                       if (initFA[namechar].next[j][k]->id != 1) {
+                           if (cur.next[j][0]->id % initFA[namechar].next[j][k]->id != 0)
                            {
-                               cur.next[j][0]->id *= namechar->next[j][k]->id;
-                               cur.next[j][0]->name += namechar->next[j][k]->name;
+                               cur.next[j][0]->id *= initFA[namechar].next[j][k]->id;
+                               cur.next[j][0]->name += initFA[namechar].next[j][k]->name;
                            }
-                           if (cur.next[j][0]->id % namechar->id != 0) {
-                             cur.next[j][0]->id *= namechar->id;
-                             cur.next[j][0]->name += namechar->name;
+                           if (cur.next[j][0]->id % initFA[namechar].id != 0) {
+                             cur.next[j][0]->id *= initFA[namechar].id;
+                             cur.next[j][0]->name += initFA[namechar].name;
                            }
                            cur.next[j][0]->name = sortString(cur.next[j][0]->name);
                        }
