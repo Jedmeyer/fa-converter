@@ -64,6 +64,9 @@ void my_hello_world::main(std::string /*url*/)
         stringstream buffer;
 
         f.simulate(buffer);
+        string s2 = buffer.str();
+        cout <<"sstream test: " << buffer << endl;
+        cout << "s2 test: " << s2 << endl;
         response().out() << buffer.str() << endl;
       }
 
