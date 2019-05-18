@@ -99,20 +99,12 @@ void my_hello_world::main(std::string /*url*/)
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
-        f.simulate();
+        string send = f.simulate();
         usleep(3000000);
         webpage.open("simulate.txt"); 
         response().out()<< "<!DOCTYPE html><html>" << endl
-        << "<body> <h1>Simulate Created: </h1>" << endl ;
-        if (webpage.is_open())
-        {
-            while ( getline (webpage,line))
-            {
-                response().out() << line;
-            }
-            webpage.close();
-             
-        }
+        << "<body> <h1>Simulate Created: </h1>" << endl << send ;
+        
 
        
       }
