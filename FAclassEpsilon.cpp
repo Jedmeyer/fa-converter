@@ -560,7 +560,7 @@ class FA {
     }
 
     output+="Simulation Tree:<br/><br/>";
-    output+="<pre>              </pre>Input <br/>";
+    output+="<pre>              </pre> Input <br/>";
     output+="<pre>              </pre><pre>              </pre>";
     output+=display[0];
     output+="<br/>";
@@ -574,6 +574,11 @@ class FA {
       output+="<br/>";
       
     }
+      output+='''pre {
+    font-size: .7rem;
+    margin: 0;
+}
+      '''
     ofstream file("simulate.txt");
 
     file << output;
