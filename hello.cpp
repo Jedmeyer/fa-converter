@@ -124,7 +124,7 @@ void my_hello_world::main(std::string /*url*/)
     
 
         FA f;
-        f.incomingFA(qmap.find("states")->second,qmap.find("start")->second,qmap.find("acc")->second,qmap.find("alpha")->second,qmap.find("trans")->second,qmap.find("input")->second,qmap.find("type")->second);
+        f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         f.translateFA();
 
         usleep(1000000);
