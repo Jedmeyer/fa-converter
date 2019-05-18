@@ -537,14 +537,14 @@ class FA {
     int t = 0; //tabs
     output+="Input: ";
     output+=input;
-    output+="<br/><br/>";
+    output+="\n\n";
     output+="Accepted: ";
 
     if (branch(t,0,input,&initFA[startstate],tree, bnum) == true)
-      output+="Yes<br/>";
+      output+="Yes\n";
     else
-      output+="No<br/>";
-    output+="<br/>";
+      output+="No\n";
+    output+="\n";
 
     //Printing Tree
     string* display = new string[inputsize+1];
@@ -559,22 +559,21 @@ class FA {
       }
     }
 
-    output+="Simulation Tree:<br/><br/>";
-    output+="<pre>              </pre> Input <br/>";
-    output+="<pre>              </pre><pre>              </pre>";
+    output+="Simulation Tree:\n\n";
+    output+="\tInput \n";
+    output+="\t\t";
     output+=display[0];
-    output+="<br/>";
+    output+="\n";
 
     for (int i=1; i<=inputsize; i++) {
-      output+="<pre>              </pre>";
+      output+="\t";
       output+=input[i-1];
-      output+=":<br/>";
-      output+="<pre>              </pre><pre>              </pre><pre>              </pre>";
+      output+=":\n";
+      output+="\t\t\t";
       output+=display[i];
-      output+="<br/>";
+      output+="\n";
       
     }
-    output+="pre {font-size: .7rem;margin: 0;}";
     ofstream file("simulate.txt");
 
     file << output;
