@@ -1,6 +1,6 @@
-Welcome to Elaina and Jason's project on a back C++ solution for a FA Translator.
+Welcome to Elaina and Jason's project on a backend C++ solution for a FA Translator.
 
-There are two portions of this project: the backend (CPPCMS) and the termianl.
+There are two portions of this project: the backend (CPPCMS) and the terminal.
 
 The terminal binaries have been added for convenience, but you can change the code to 
 customize what gets passed (`FAclassEpsilon.cpp`).
