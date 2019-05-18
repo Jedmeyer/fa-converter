@@ -95,8 +95,9 @@ void my_hello_world::main(std::string /*url*/)
     // ---If (type key == simulate) - its the output page---//
     if(qmap.find("type")->second == "simulate"){
         cout << "We're gonna SIMULATE for a client!\n";
-        FA f;
 
+
+        FA f;
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         //f.translateFA();
         //f.simulate("010011");
@@ -105,7 +106,7 @@ void my_hello_world::main(std::string /*url*/)
         
         system("cat simulate.txt | ./terminal-to-html -preview > out.html");
         simulate.open("./out.html");
-        usleep(1000000);
+        usleep(500000);
         
         if (simulate.is_open())
         {
