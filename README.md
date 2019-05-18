@@ -10,21 +10,24 @@ but it can be built using the following steps.
 
  Get source of CPPCMS:
  
-`git clone https://github.com/artyom-beilis/cppcms.git cppcms    `
+```git clone https://github.com/artyom-beilis/cppcms.git cppcms```
 
 Get into the build directory:
-`cd cppcms && mkdir build && cd build`
+```cd cppcms && mkdir build && cd build```
 
 Run CMAKE and Make
-`cmake ..`
-`make`
-`make install`
+```
+cmake ..
+make
+make install
+
+```
 
 Add path for cppcms - else will fail on compilation:
-`export LD_LIBRARY_PATH=/usr/local/lib`
+```export LD_LIBRARY_PATH=/usr/local/lib``
 
 Then, you can just:
-`make`
+```make```
 
 
 # How to:
