@@ -104,7 +104,7 @@ void my_hello_world::main(std::string /*url*/)
         //f.simulate("010101");
         string send = f.simulate();
         
-        system("cat simulate.txt | ./terminal-to-html -preview > out.html");
+        system("cat ./txt-files/simulate.txt | ./terminal-to-html -preview > out.html");
         simulate.open("./out.html");
         usleep(500000);
         
@@ -138,7 +138,7 @@ void my_hello_world::main(std::string /*url*/)
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         f.translateFA();
 
-        system("cat print.txt | ./terminal-to-html -preview > out.html");
+        system("cat ./txt-files/print.txt | ./terminal-to-html -preview > out.html");
         usleep(500000);
 
         dfa.open("out.html"); 
