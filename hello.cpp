@@ -7,9 +7,9 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include<vector>
-#include"helper_functions.hpp"
-#include"FAclassEpsilon.cpp"
+#include <vector>
+#include "helper_functions.hpp"
+#include "FAclassEpsilon.cpp"
 using namespace std;
 
 
@@ -61,8 +61,10 @@ void my_hello_world::main(std::string /*url*/)
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
-        f.simulate();
-        response().out() << "I swear we simulated it!" << endl;
+        stringstream buffer;
+
+        f.simulate(buffer);
+        response().out() << buffer.str() << endl;
       }
 
 
