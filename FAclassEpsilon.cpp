@@ -578,7 +578,7 @@ class FA {
     font-size: .7rem;
     margin: 0;
 }
-      '''
+      ''';
     ofstream file("simulate.txt");
 
     file << output;
