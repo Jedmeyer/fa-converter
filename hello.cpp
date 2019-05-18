@@ -124,6 +124,8 @@ void my_hello_world::main(std::string /*url*/)
     // =====================================================//
     // ----If (type value == DFA) - its the translated page---//
     if(qmap.find("type")->second == "DFA"){
+        /*
+        
         cout << "We're gonna CONVERT for a client!\n";
     
 
@@ -147,7 +149,7 @@ void my_hello_world::main(std::string /*url*/)
              
         }
 
-     
+     */
     }
 
 
