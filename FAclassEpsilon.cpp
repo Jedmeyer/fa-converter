@@ -54,31 +54,7 @@ bool operator==(const State& s1,const State& s2){return(s1.id == s2.id);};
 bool operator>=(const State& s1,const State& s2){return(s1.id >= s2.id);};
 bool operator<=(const State& s1,const State& s2){return(s1.id <= s2.id);};
 
-//calculates size of array
-int arrsize (char * arr) {
-  int size = 0;
-  int i = 0;
-  while (arr[i]!='\0') {
-    size++;
-    i++;
-  }
-  return size;
-}
 
-// function to print string in sorted order
-string sortString(string &str) {
-   sort(str.begin(), str.end());
-   return str;
-}
-
-string * center(int bnum, int spaces, int i, string * display, string** tree) {
-  if (tree[i][bnum] != "_") {
-    int start = bnum * spaces;
-    int loc = floor((spaces-1)/2) + start;
-    display[i][loc] = tree[i][bnum][0];
-  }
-  return display;
-}
 
 class FA {
   //Primes for id
@@ -100,8 +76,33 @@ class FA {
   char * input;
   int startstate;
 
-  public:
+  //calculates size of array
+  public: int arrsize (char * arr) {
+    int size = 0;
+    int i = 0;
+    while (arr[i]!='\0') {
+      size++;
+      i++;
+    }
+    return size;
+  }
 
+  // function to print string in sorted order
+  public: string sortString(string &str) {
+     sort(str.begin(), str.end());
+     return str;
+  }
+
+   public: string * center(int bnum, int spaces, int i, string * display, string** tree) {
+    if (tree[i][bnum] != "_") {
+      int start = bnum * spaces;
+      int loc = floor((spaces-1)/2) + start;
+      display[i][loc] = tree[i][bnum][0];
+    }
+    return display;
+  }
+
+  public:
   void printDFA(stringstream &o) {
 
     //States
@@ -535,7 +536,7 @@ class FA {
   }
 };
 
-/*
+
 int main() {
     FA f;
     f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "010011","string");
@@ -548,4 +549,3 @@ int main() {
     f.simulate(out);
     f.printDFA();
 }
-*/
