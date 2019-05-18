@@ -100,9 +100,10 @@ void my_hello_world::main(std::string /*url*/)
         //f.simulate("010011");
         //f.simulate("010101");
         string send = f.simulate();
-        usleep(3000000);
+        
         system("cat simulate.txt | ./terminal-to-html -preview > out.html");
         webpage.open("out.html");
+        usleep(3000000);
         response().out()<< "<!DOCTYPE html><html>" << endl
         << "<body> <h1>Simulation Created: </h1>" << endl; 
         if (webpage.is_open())
