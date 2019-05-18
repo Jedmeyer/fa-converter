@@ -104,15 +104,13 @@ void my_hello_world::main(std::string /*url*/)
         
         system("cat simulate.txt | ./terminal-to-html -preview > out.html");
         simulate.open("./out.html");
-        usleep(3000000);
-        response().out()<< "<!DOCTYPE html><html>" << endl
-        << "<body> <h1>Simulation Created: </h1>" << endl; 
+        usleep(1000000);
+        
         if (simulate.is_open())
         {
             cout << "out.html opened!" << endl;
             while ( getline (simulate,line))
             {
-                cout << line;
                 response().out() << line << '\n';
             }
             simulate.close();
