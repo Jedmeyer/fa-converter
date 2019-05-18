@@ -7,9 +7,9 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include<vector>
-#include"helper_functions.hpp"
-#include"FAclassEpsilon.cpp"
+#include <vector>
+#include "helper_functions.hpp"
+#include "FAclassEpsilon.cpp"
 using namespace std;
 
 
