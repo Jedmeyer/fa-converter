@@ -100,7 +100,7 @@ void my_hello_world::main(std::string /*url*/)
         //f.simulate("010011");
         //f.simulate("010101");
         f.simulate();
-        usleep(1000000);
+        usleep(3000000);
         webpage.open("simulate.txt"); 
         response().out()<< "<!DOCTYPE html><html>" << endl
         << "<body> <h1>Simulate Created: </h1>" << endl ;
@@ -108,7 +108,7 @@ void my_hello_world::main(std::string /*url*/)
         {
             while ( getline (webpage,line))
             {
-                response().out() << line << '\n';
+                response().out() << line <<;
             }
             webpage.close();
              
