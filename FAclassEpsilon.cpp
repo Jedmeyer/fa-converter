@@ -177,7 +177,7 @@ class FA {
     return false;
   }
 
-  public: void incomingFA(string states, string start, string acc, string alpha, string trans, string instring, string type) {
+  public: void incomingFA(string states, string start, string acc, string alpha, string trans, string type, string instring) {
      input = new char[instring.length() + 1];
      std::strcpy(input,instring.c_str());
 
