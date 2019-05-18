@@ -108,7 +108,7 @@ void my_hello_world::main(std::string /*url*/)
         {
             while ( getline (webpage,line))
             {
-                response().out() << line <<;
+                response().out() << line;
             }
             webpage.close();
              
