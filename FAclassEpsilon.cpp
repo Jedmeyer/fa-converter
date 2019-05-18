@@ -581,7 +581,7 @@ class FA {
   }
 };
 
-/*
+
 int main() {
     FA f;
     string s1,s2;
@@ -601,4 +601,6 @@ int main() {
     cout << "DFA: " << s2 << endl;;
 
 } 
-*/
+
+
+
