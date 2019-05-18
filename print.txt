@@ -1,15 +1,19 @@
-States: {A,AC,ACD,AB,ABD,}
-Start State: A
-Accept States: {ACD,ABD,}
-Alphabet: {0,1,}
+States: {13,2,23,123,3,Ø,1,}
+Start State: 13
+Accept States: {13,123,1,}
+Alphabet: {a,b,}
 Transition Functions:
-d(A,0) = AB
-d(A,1) = AC
-d(AC,0) = AB
-d(AC,1) = ACD
-d(ACD,0) = AB
-d(ACD,1) = ACD
-d(AB,0) = ABD
-d(AB,1) = AC
-d(ABD,0) = ABD
-d(ABD,1) = AC
+d(13,a) = 13
+d(13,b) = 2
+d(2,a) = 23
+d(2,b) = 3
+d(23,a) = 123
+d(23,b) = 3
+d(123,a) = 123
+d(123,b) = 23
+d(3,a) = 1
+d(3,b) = Ø
+d(Ø,a) = Ø
+d(Ø,b) = Ø
+d(1,a) = 13
+d(1,b) = 2
