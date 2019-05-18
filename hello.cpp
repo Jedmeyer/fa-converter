@@ -67,7 +67,7 @@ void my_hello_world::main(std::string /*url*/)
         qmap.insert(pair<string, string>("zdumb", "zdumb"));
     for(int i=0; i<qgive.size(); i++)
         cout << qgive[i];
-        
+
     
 
     // ------------------LANDING Page-----------------------//
@@ -99,6 +99,7 @@ void my_hello_world::main(std::string /*url*/)
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
+        f.simulate();
         usleep(1000000);
         webpage.open("simulate.txt"); 
         response().out()<< "<!DOCTYPE html><html>" << endl
