@@ -108,7 +108,8 @@ class FA {
   }
 
   public:
-  string printDFA() {
+  
+  void printDFA() {
     string output;
     //States
     output+= "States: {";
@@ -158,7 +159,9 @@ class FA {
         output+="\n";
       }
     }
-    return output;
+    ofstream file("print.txt");
+
+    file << output;
   }
 
   public: bool inStateList(vector<State> Func, State cur) {
@@ -515,7 +518,7 @@ class FA {
 
   public: 
   
-  string simulate() {
+  void simulate() {
 
     string output;
     //call branch function to simulate input moving through states and cout results
@@ -570,7 +573,9 @@ class FA {
       output+="\n";
       
     }
-    return output;
+    ofstream file("simulate.txt");
+
+    file << output;
   }
 };
 

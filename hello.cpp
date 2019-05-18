@@ -34,13 +34,12 @@ void my_hello_world::main(std::string /*url*/)
 
     //Here we parse that good ole' query string for preparation
     //Basically use it to figure out what we execute.
-    istringstream *f = new istringstream(qstring);
+    istringstream f(qstring);
     vector<string> qparsed;
-    map<string,string> *qmap = new map<string,string>;
-
+    map<string,string> qmap;
     // Parse Everything into a vector
     string all;  
-    while(getline(*f, all, '&'))
+    while(getline(f, all, '&'))
     {
         qparsed.push_back(all);
     }
@@ -50,22 +49,21 @@ void my_hello_world::main(std::string /*url*/)
     string title;
     string content;
     for(int i =0; i< qparsed.size(); i++){
-        delete f;
-        f = new istringstream(qparsed[i]);
-        getline(*f, title, '='); //Get the key value
-        getline(*f, content);    //Get the value... value?
-        qmap->insert(pair<string,string>(title,content));
+        istringstream g(qparsed[i]);
+        getline(g, title, '='); //Get the key value
+        getline(g, content);    //Get the value... value?
+        qmap.insert(pair<string,string>(title,content));
     }
 
     //Inserted to make it easier to be able to find the end
-    qmap->insert(pair<string,string>("zdummy", "zdummy"));
-    delete f;
+    qmap.insert(pair<string,string>("zdummy", "zdummy"));
+
 
 
     // ------------------LANDING Page-----------------------//
     // ==================================================== //
     // If we don't find a 'type' key - its the landing page.//
-    if(qmap->find("type") == qmap->end()){
+    if(qmap.find("type") == qmap.end()){
         cout << "We're gonna LANDING PAGE for a client!\n";
 
         if (webpage.is_open())
@@ -83,21 +81,28 @@ void my_hello_world::main(std::string /*url*/)
     // -----------------NFA OUTPUT PAGE---------------------//
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
-    if(qmap->find("type")->second == "simulate"){
+    if(qmap.find("type")->second == "simulate"){
         cout << "We're gonna SIMULATE for a client!\n";
         FA f;
-        f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
+
+        f.incomingFA(qmap.find("states")->second,qmap.find("start")->second,qmap.find("acc")->second,qmap.find("alpha")->second,qmap.find("trans")->second,qmap.find("input")->second,qmap.find("type")->second);
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
+        webpage.open("simulate.txt"); 
+        response().out()<< "<!DOCTYPE html><html>" << endl
+        << "<body> <h1>Simulate Created: </h1>" << endl ;
+        if (webpage.is_open())
+        {
+            while ( getline (webpage,line))
+            {
+                response().out() << line << '\n';
+            }
+            webpage.close();
+             
+        }
 
-        string output_response = f.simulate();
-    
-        cout << "s2 test: " << output_response << endl;
-        response().out()
-        << "<!DOCTYPE html><html>" << endl
-        << "<body> <h1>DFA Created: </h1>" << endl 
-        << "<p>" << output_response << "</p>";
+       
       }
 
 
@@ -106,24 +111,31 @@ void my_hello_world::main(std::string /*url*/)
     // ----------------DFA OUTPUT PAGE----------------------//
     // =====================================================//
     // ----If (type value == DFA) - its the translated page---//
-    if(qmap->find("type")->second == "DFA"){
+    if(qmap.find("type")->second == "DFA"){
         cout << "We're gonna CONVERT for a client!\n";
-
+    
 
         FA f;
-        f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
+        f.incomingFA(qmap.find("states")->second,qmap.find("start")->second,qmap.find("acc")->second,qmap.find("alpha")->second,qmap.find("trans")->second,qmap.find("input")->second,qmap.find("type")->second);
         f.translateFA();
 
-        string output_response = f.printDFA();
+        webpage.open("print.txt"); 
+
         response().out()
         << "<!DOCTYPE html><html>" << endl
-        << "<body> <h1>DFA Created: </h1>" << endl 
-        << "<p>" << output_response << "</p>";
-        
-        
+        << "<body> <h1>DFA Created: </h1>" << endl;
+        if (webpage.is_open())
+        {
+            while ( getline (webpage,line))
+            {
+                response().out() << line << '\n';
+            }
+            webpage.close();
+             
+        }
+
      
     }
-    delete qmap;
 
 
 }
