@@ -8,7 +8,6 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include "helper_functions.hpp"
 #include "FAclassEpsilon.cpp"
 using namespace std;
 
@@ -27,13 +26,40 @@ public:
 void my_hello_world::main(std::string /*url*/)
 {
 
-    //Here we parse that good ole' query string for preparation
-    //Basically use it to figure out what we execute.
+    
     string qstring = request().query_string();
     ifstream webpage;
     string line;
     webpage.open("./html-pages/front-page.html");
-    map<string,string> *qmap = parseQstring(qstring);
+
+    //Here we parse that good ole' query string for preparation
+    //Basically use it to figure out what we execute.
+    istringstream *f = new istringstream(qstring);
+    vector<string> qparsed;
+    map<string,string> *qmap = new map<string,string>;
+
+    // Parse Everything into a vector
+    string all;  
+    while(getline(*f, all, '&'))
+    {
+        qparsed.push_back(all);
+    }
+
+
+    // Sepearate variable names and values and throw them into the query map
+    string title;
+    string content;
+    for(int i =0; i< qparsed.size(); i++){
+        delete f;
+        f = new istringstream(qparsed[i]);
+        getline(*f, title, '='); //Get the key value
+        getline(*f, content);    //Get the value... value?
+        qmap->insert(pair<string,string>(title,content));
+    }
+
+    //Inserted to make it easier to be able to find the end
+    qmap->insert(pair<string,string>("zdummy", "zdummy"));
+    delete f;
 
 
     // ------------------LANDING Page-----------------------//
