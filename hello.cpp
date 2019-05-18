@@ -10,6 +10,7 @@
 #include <vector>
 #include "FAclassEpsilon.cpp"
 #include <unistd.h>
+#include <boost/function.hpp>
 
 
 using namespace std;
@@ -99,6 +100,8 @@ void my_hello_world::main(std::string /*url*/)
     
         FA f;
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
+        for(int i=0; i<qgive.size(); i++)
+            cout << qgive[i];
         //f.translateFA();
         //f.simulate("010011");
         //f.simulate("010101");
@@ -136,6 +139,7 @@ void my_hello_world::main(std::string /*url*/)
 
         FA f;
         f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
+        //f.incomingFA(qgive[0],qgive[1],qgive[2],qgive[3],qgive[4],qgive[5],qgive[6]);
         f.translateFA();
 
         system("cat ./txt-files/print.txt | ./terminal-to-html -preview > out.html");
