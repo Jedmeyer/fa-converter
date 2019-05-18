@@ -40,6 +40,8 @@ void my_hello_world::main(std::string /*url*/)
     // ==================================================== //
     // If we don't find a 'type' key - its the landing page.//
     if(qmap->find("type") == qmap->end()){
+        cout << "We're gonna LANDING PAGE for a client!\n";
+
         if (webpage.is_open())
         {
             while ( getline (webpage,line))
@@ -56,6 +58,7 @@ void my_hello_world::main(std::string /*url*/)
     // ==================================================== //
     // ---If (type key == simulate) - its the output page---//
     if(qmap->find("type")->second == "simulate"){
+        cout << "We're gonna SIMULATE for a client!\n";
         FA f;
         f.incomingFA(qmap->find("states")->second,qmap->find("start")->second,qmap->find("acc")->second,qmap->find("alpha")->second,qmap->find("trans")->second,qmap->find("input")->second,qmap->find("type")->second);
         //f.translateFA();
@@ -77,6 +80,7 @@ void my_hello_world::main(std::string /*url*/)
     // =====================================================//
     // ----If (type value == DFA) - its the translated page---//
     if(qmap->find("type")->second == "DFA"){
+        cout << "We're gonna CONVERT for a client!\n";
 
 
         FA f;
