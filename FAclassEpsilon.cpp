@@ -587,26 +587,34 @@ class FA {
 };
 
 
-/*
-int main() {
+
+int main(int argc, char ** argv) {
+
+
+    for(int i =0; i < argc; i++)
+      cout << argv[i] << endl;
+
     FA f;
     string s1,s2;
     //simulate works with dis one.
     //f.incomingFA("A,B,C,D", "A", "D", "0,1", "A;0;A,B;A;1;A,C;B;0;D;C;1;D,", "string","010011");
     
     // translate with this one
-    f.incomingFA("1,2,3", "1", "1", "a,b,E", "1;b;2;1;E;3;2;a;2,3;2;b;3;3;a;1,", "string", "abaa");
+    //f.incomingFA("1,2,3", "1", "1", "a,b,E", "1;b;2;1;E;3;2;a;2,3;2;b;3;3;a;1,", "string", "abaa");
+    f.incomingFA(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
+    
+    
     //f.incomingFA("A,B,C,D", "B", "A,D", "0,E,1", "B;E;A,C;C;0;C,D;C;1;C,", "string", "01100");
     //f.simulate("010011");
-    //f.simulate("010101");
-    stringstream out;
     f.translateFA();
     s1 = f.printDFA();
+    stringstream out;
+
     cout << "SIMULATION: " << s1;
 
     cout << "DFA: " << endl;;
 
 } 
-*/
+
 
 
