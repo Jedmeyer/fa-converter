@@ -3,10 +3,15 @@ Welcome to Elaina and Jason's project on a backend C++ solution for a FA Transla
 There are two portions of this project: the backend (CPPCMS) and the terminal.
 
 The terminal binaries have been added for convenience, but you can change the code to 
-customize what gets passed (`FAclassEpsilon.cpp`).
+customize what gets passed (`FAclassEpsilon.cpp`). 
 
-The backend is currently non-functional due to some thread safety issues - 
+The python backend is in `server.py` - and is a python3 file. It currently runs
+on localhost on port 8081.
+
+The c++ backend is currently non-functional due to some thread safety issues - 
 but it can be built using the following steps.
+
+
 
  Get source of CPPCMS:
  
